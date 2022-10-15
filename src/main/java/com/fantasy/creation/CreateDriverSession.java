@@ -11,6 +11,13 @@ import java.net.URL;
 
 public class CreateDriverSession {
     public static AppiumDriver getDriver() throws MalformedURLException {
+//        todo: standard set of desired capabilities
+//        todo: multiple emulator self launch
+//        manage open emulators
+//        todo: etc
+
+
+
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME,"Android");
         caps.setCapability(MobileCapabilityType.DEVICE_NAME,"any");

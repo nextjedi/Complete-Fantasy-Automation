@@ -1,4 +1,4 @@
-package com.fantasy.creation.model;
+package com.fantasy.model;
 
 public enum PlayerType {
     WK,

@@ -1,4 +1,4 @@
-package com.fantasy.creation.model;
+package com.fantasy.model;
 
 import java.util.Objects;
 
@@ -10,7 +10,10 @@ public class Player {
     private float selectedBy;
     private int points;
     private String team;
-    private int battinOrder;
+    private int battingOrder;
+    private int bowlingOvers;
+    private boolean isKeyBowler;
+    private boolean isRunCandidate;
 
     public Player() {
     }
@@ -23,7 +26,7 @@ public class Player {
         this.selectedBy = selectedBy;
         this.points = points;
         this.team = team;
-        this.battinOrder = battinOrder;
+        this.battingOrder = battinOrder;
     }
 
     @Override
@@ -37,6 +40,30 @@ public class Player {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    public int getBowlingOvers() {
+        return bowlingOvers;
+    }
+
+    public void setBowlingOvers(int bowlingOvers) {
+        this.bowlingOvers = bowlingOvers;
+    }
+
+    public boolean isKeyBowler() {
+        return isKeyBowler;
+    }
+
+    public void setKeyBowler(boolean keyBowler) {
+        isKeyBowler = keyBowler;
+    }
+
+    public boolean isRunCandidate() {
+        return isRunCandidate;
+    }
+
+    public void setRunCandidate(boolean runCandidate) {
+        isRunCandidate = runCandidate;
     }
 
     public String getName() {
@@ -95,11 +122,11 @@ public class Player {
         this.team = team;
     }
 
-    public int getBattinOrder() {
-        return battinOrder;
+    public int getBattingOrder() {
+        return battingOrder;
     }
 
-    public void setBattinOrder(int battinOrder) {
-        this.battinOrder = battinOrder;
+    public void setBattingOrder(int battingOrder) {
+        this.battingOrder = battingOrder;
     }
 }
