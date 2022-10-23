@@ -1,6 +1,8 @@
 package com.fantasy.model;
 
-public enum PitchType {
+import java.io.Serializable;
+
+public enum PitchType implements Serializable {
     BALANCED,
     BATTING,
     BOWLING

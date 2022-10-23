@@ -1,9 +1,10 @@
 package com.fantasy.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class MatchDetails {
+public class MatchDetails implements Serializable {
     private Date time;
     private Team first;
     private Team Second;

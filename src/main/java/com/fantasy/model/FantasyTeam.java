@@ -51,20 +51,23 @@ public class FantasyTeam {
         if(!((3<=bat&& bat<=6) &&(3<=bowl&& bowl<=6) && (1<=al&& al<=4) && (1<=wk&& wk<=4))){
             return false;
         }
-//        sum less than 100
-//        wk count 1-4
-//        bat count 3-6
-//        bowl count 3-6
-//        al count 1-4
-//        /max 7 from 1 team
-//        total 11
+        Team team = players.iterator().next().getTeam();
+        int teamCount = (int) players.stream().filter(player -> player.getTeam().equals(team)).count();
+        if(teamCount<4 || teamCount >7){
+            return false;
+        }
 
 
-        double sum = players.stream().mapToDouble(value -> value.getPoints()).sum();
+
+        double sum = players.stream().mapToDouble(value -> value.getCredit()).sum();
         if((players.size() != 11)||(sum >100)){
             return false;
         }
-        return true;
+        if(players.contains(captain) && players.contains(vCaptain)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override

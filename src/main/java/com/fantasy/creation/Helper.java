@@ -12,11 +12,15 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.io.*;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Helper {
+
     public static Boolean selectMatch(AppiumDriver driver, MatchDetails matchDetails) throws InterruptedException {
 //        todo: add scrolling features
 //      todo: a lot of todos here
@@ -53,32 +57,30 @@ public class Helper {
         return false;
     }
 
+
     public static Player parsePlayer(List<WebElement> playerDetails, PlayerType type){
         String name = "";
-//        todo: verify and improve logic
         float sel = 0;
         int points = 0;
         float credit = 0;
-        String team = "";
+        Team team = null;
         boolean isPlaying =false;
         for (WebElement p:playerDetails){
             String text = p.getText();
             if(EnumUtils.isValidEnumIgnoreCase(Team.class,text.replaceAll("-",""))){
-                team = text.replaceAll("-","");
+                team = Team.valueOf(text.replaceAll("-",""));
             }else if(text.startsWith("Sel")){
                 // parse selected by
                 text = text.replaceAll("[^0-9\\.]", "");
                 sel = Float.valueOf(text);
             } else if (NumberUtils.isCreatable(text)) {
                 float d =Float.valueOf(text);
-                if(d<13 && d>5){
-                    // TODO: need a better logic
-//                    check for decimal point
+                if(text.contains(".")){
                     credit = d;
                 }else {
                     points = (int) d;
                 }
-            } else if ( CharMatcher.ascii().matchesAllOf(text)) {
+            } else if ( CharMatcher.ascii().matchesAllOf(text) && !text.isBlank()) {
                 // team
                 name = text;
 
@@ -90,8 +92,43 @@ public class Helper {
                 }
             }
         }
-
+        if(name.isBlank() || team ==null){
+            return null;
+        }
         Player player = new Player(name,credit,type,isPlaying,sel,points,team, -1);
         return player;
+    }
+
+    public static void write(MatchDetails match){
+
+
+        try {
+            FileOutputStream f = new FileOutputStream(new File(match.getFirst().toString()+"-"+match.getSecond().toString()+".txt"));
+            ObjectOutputStream o = new ObjectOutputStream(f);
+            o.writeObject(match);
+            o.close();
+            f.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+    }
+
+    public static MatchDetails read(MatchDetails match){
+        try {
+            FileInputStream fi = new FileInputStream(new File(match.getFirst().toString()+"-"+match.getSecond().toString()+".txt"));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            match = (MatchDetails) oi.readObject();
+            return match;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 }

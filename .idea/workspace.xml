@@ -4,23 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="un organized functionalities&#10;fetch details">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/BowlingType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/FantasyTeam.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/FantasyTeamTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/PitchType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" afterDir="false" />
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="completed the layout and framework of operations&#10;3 proper steps need effort">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Uuid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/model/PlayerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/PlayerType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/BowlingType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/BowlingType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/FantasyTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/FantasyTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/PitchType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/PitchType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +29,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -154,7 +153,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665725652785</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="completed the layout and framework of operations&#10;3 proper steps need effort">
+      <created>1665832357729</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1665832357729</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -171,27 +177,58 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="un organized functionalities&#10;fetch details" />
-    <option name="LAST_COMMIT_MESSAGE" value="un organized functionalities&#10;fetch details" />
+    <MESSAGE value="completed the layout and framework of operations&#10;3 proper steps need effort" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed the layout and framework of operations&#10;3 proper steps need effort" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
-          <line>24</line>
-          <option name="timeStamp" value="42" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
+          <line>101</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
-          <line>28</line>
-          <option name="timeStamp" value="43" />
+          <line>218</line>
+          <option name="timeStamp" value="143" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
-          <line>139</line>
-          <option name="timeStamp" value="47" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="186" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java</url>
+          <line>125</line>
+          <option name="timeStamp" value="187" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java</url>
+          <line>119</line>
+          <option name="timeStamp" value="188" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java</url>
+          <line>104</line>
+          <option name="timeStamp" value="189" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/dream11automation$DriverCode.ic" NAME="DriverCode Coverage Results" MODIFIED="1666335132776" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.fantasy.*</FILTER>
+    </SUITE>
   </component>
 </project>

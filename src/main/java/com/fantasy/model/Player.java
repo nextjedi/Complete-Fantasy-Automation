@@ -1,15 +1,16 @@
 package com.fantasy.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Player {
+public class Player implements Serializable {
     private String name;
     private float credit;
     private PlayerType type;
     private boolean isPlaying;
     private float selectedBy;
     private int points;
-    private String team;
+    private Team team;
     private int battingOrder;
     private int bowlingOvers;
     private boolean isKeyBowler;
@@ -18,7 +19,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(String name, float credit, PlayerType type, boolean isPlaying, float selectedBy, int points, String team, int battinOrder) {
+    public Player(String name, float credit, PlayerType type, boolean isPlaying, float selectedBy, int points, Team team, int battinOrder) {
         this.name = name;
         this.credit = credit;
         this.type = type;
@@ -114,11 +115,11 @@ public class Player {
         this.points = points;
     }
 
-    public String getTeam() {
+    public Team getTeam() {
         return team;
     }
 
-    public void setTeam(String team) {
+    public void setTeam(Team team) {
         this.team = team;
     }
 
