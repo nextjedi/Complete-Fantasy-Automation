@@ -20,7 +20,7 @@ public class CreateDriverSession {
             udid = Uuid.MFM7A6LVH6YTMR8D.name();
         }
         if(port==0){
-            port = 4723;
+            port = 4724;
         }
 
 

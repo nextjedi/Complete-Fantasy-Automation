@@ -18,8 +18,8 @@ public class Strategy {
 //        match simulator based on batting and bowling order getting master list of teams
 //        different strategies
         List<Player> players = matchDetails.getPlayers().stream().filter(Player::isPlaying).collect(Collectors.toList());
-//        players = matchDetails.getPlayers();
-//        matchDetails.getPlayers().stream().filter(player -> player.getSelectedBy()>30).collect(Collectors.toList());
+        players = matchDetails.getPlayers();
+        players = matchDetails.getPlayers().stream().filter(player -> player.getSelectedBy()>15).collect(Collectors.toList());
 
         first = matchDetails.getFirst();
         second = matchDetails.getSecond();
@@ -31,15 +31,162 @@ public class Strategy {
         return teams.stream().map(FantasyTeamTO::new).collect(Collectors.toList());
     }
 
+    private List<FantasyTeam> orderBased(List<Player> players){
+        List<String> indBat= Arrays.asList("L Rahul","V Kohli","R Sharma","S Yadav");
+        List<String> pakBat= Arrays.asList("B Azam","M Rizwan", "S Masood","F Zaman");
+        List<Player> indBats = players.stream().filter(player -> indBat.contains(player.getName())).collect(Collectors.toList());
+        List<Player> pakBats = players.stream().filter(player -> pakBat.contains(player.getName())).collect(Collectors.toList());
+        indBats.addAll(pakBats);
+        List<List<Player>> batsMens =Generator.subset(indBats).simple().stream().filter(playerPlayings -> playerPlayings.size() <6 && playerPlayings.size()>3).toList();
+        batsMens =batsMens.stream().filter(players1 -> {
+            return (players1.stream().filter(player -> player.getTeam().equals(Team.IND)).count() < 4) &&
+                    (players1.stream().filter(player -> player.getTeam().equals(Team.PAK)).count() < 4);
+        }).collect(Collectors.toList());
+
+
+        List<String> indBowl= Arrays.asList("B Kumar", "M Shami","A Patel","A Singh");
+        List<String> pakBowl= Arrays.asList("S Afridi","H Rauf","M Nawaz","S Khan");
+        List<Player> indBowls = players.stream().filter(player -> indBowl.contains(player.getName())).collect(Collectors.toList());
+        List<Player> pakBowls = players.stream().filter(player -> pakBowl.contains(player.getName())).collect(Collectors.toList());
+        indBowls.addAll(pakBowls);
+        List<List<Player>> bowlers =Generator.subset(indBowls).simple().stream().filter(playerPlayings -> playerPlayings.size() <6 && playerPlayings.size()>3).toList();
+        bowlers =bowlers.stream().filter(players1 -> {
+            return (players1.stream().filter(player -> player.getTeam().equals(Team.IND)).count() < 4) &&
+                    (players1.stream().filter(player -> player.getTeam().equals(Team.PAK)).count() < 3);
+        }).collect(Collectors.toList());
+
+
+        Iterator<List<Player>> bowlI = bowlers.iterator();
+        for(List<Player> batsman:batsMens){
+            if(bowlI.hasNext()){
+                batsman.addAll(bowlI.next());
+            }else {
+                bowlI = bowlers.iterator();
+            }
+        }
+//        todo: analyze
+//        todo: discard one sided combos
+        for(List<Player> batsman:batsMens){
+            Optional<Player> p =players.stream().filter(player -> player.getName().equals("M Rizwan")).findFirst();
+            Optional<Player> p2 = players.stream().filter(player -> player.getName().equals("D Karthik")).findFirst();
+            if(p.isPresent()){
+                if(!batsman.contains(p.get())){
+                    batsman.add(p2.get());
+                }
+            }
+        }
+
+
+
+        List<FantasyTeam> teams = new ArrayList<>();
+//        todo: fill team
+
+        //        todo:list of cvc candidate 6c2
+//        List<String> cvc = Arrays.asList("M Rizwan","B Azam","L Rahul","S Masood","S Yadav","V Kohli","H Pandya","H Rauf");
+//        List<Player> cvcs = players.stream().filter(player -> cvc.contains(player.getName())).collect(Collectors.toList());
+        List<Player> cvcs = players.stream().sorted((o1, o2) -> (int) (o2.getSelectedBy() - o1.getSelectedBy())).collect(Collectors.toList()).subList(0,6);
+        List<List<Player>> captains = Generator.subset(cvcs).simple().stream().filter(playerPlayings -> playerPlayings.size() == 2).toList();
+//        todo: captain reverse
+
+        Iterator<List<Player>> cvcI = captains.iterator();
+        for (List<Player> p:batsMens){
+            int playerAdded =0;
+            int addCount = 11-p.size();
+
+            long bat = p.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BAT)).count();
+            long wk = p.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.WK)).count();
+            long al = p.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.AR)).count();
+            long bowl = p.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BOWL)).count();
+            if(bowl <3){
+                int bCount =11-p.size();
+
+                List<Player> bwlers = players.stream().filter(player -> player.getType().equals(PlayerType.BOWL)).collect(Collectors.toList());
+                bwlers =bwlers.stream().filter(player -> !p.contains(player)).collect(Collectors.toList());
+                p.addAll(bwlers.subList(1,1+bCount));
+
+
+            }
+            if(al ==0){
+                Optional<Player> p2 = players.stream().filter(player -> player.getName().equals("H Pandya")).findFirst();
+                if(p2.isPresent()){
+                    p.add(p2.get());
+                    playerAdded++;
+                }
+                if(p.size() !=11){
+                    p2 = players.stream().filter(player -> player.getName().equals("S Khan")).findFirst();
+                    if(p2.isPresent()){
+                        p.add(p2.get());
+                        playerAdded++;
+                    }
+                }
+                if(p.size() !=11){
+                    p2 = players.stream().filter(player -> player.getName().equals("A Patel")).findFirst();
+                    if(p2.isPresent()){
+                        p.add(p2.get());
+                        playerAdded++;
+                    }
+                }
+            }
+
+            int indCount = (int) p.stream().filter(player -> player.getTeam().equals(Team.IND)).count();
+            if(indCount<4){
+                List<Player> temp = players.stream().filter(player -> player.getTeam().equals(Team.IND)).collect(Collectors.toList());
+                temp =temp.stream().filter(player -> !p.contains(player)).collect(Collectors.toList());
+                temp = temp.subList(0,4-indCount);
+                p.addAll(temp);
+            }
+            int pakCount = (int) p.stream().filter(player -> player.getTeam().equals(Team.PAK)).count();
+            if(indCount<4){
+                List<Player> temp = players.stream().filter(player -> player.getTeam().equals(Team.PAK)).collect(Collectors.toList());
+                temp =temp.stream().filter(player -> !p.contains(player)).collect(Collectors.toList());
+                temp = temp.subList(0,4-indCount);
+                p.addAll(temp);
+            }
+            if(p.size()<=11){
+                List<Player> temp = players.stream().filter(player -> !p.contains(player)).collect(Collectors.toList());
+                temp = temp.subList(0,11-p.size());
+                p.addAll(temp);
+            }
+
+            if(p.size() ==11){
+//                validate team add or discard
+                boolean flag = false;
+                while (!flag){
+                    if(cvcI.hasNext()){
+                        List<Player> caps = cvcI.next();
+                        if(p.contains(caps.get(0)) && p.contains(caps.get(1))){
+                            flag = true;
+                            FantasyTeam team = new FantasyTeam(p.stream().collect(Collectors.toSet()), caps.get(0),caps.get(1));
+                            if(team.isValid()){
+                                teams.add(team);
+                            }
+                        }
+                    }else {
+                        cvcI = captains.iterator();
+                    }
+
+                }
+
+            }
+        }
+
+//        playersize
+//        team count
+//
+
+
+
+        return teams;
+    }
     private List<FantasyTeam> cvcBased(List<Player> players){
 //        todo: combo of wks
         List<Player> wks = players.stream().filter(player -> player.getType().equals(PlayerType.WK)).collect(Collectors.toList());
         List<List<Player>> wicketKeeprs =Generator.subset(wks).simple().stream().filter(playerPlayings -> playerPlayings.size() >0 &&  playerPlayings.size() <=2).toList();
 
 //        todo: batsmen combo
-        List<String> batsmen = Arrays.asList("P Nissanka","P Stirling","D de Silva","A Balbirnie","G Dockrell","B Rajapaksa");
-        List<Player> batsmenPlayer = players.stream().filter(player -> batsmen.contains(player.getName())).collect(Collectors.toList());
-//        List<Player> batsmenPlayer = players.stream().filter(player -> player.getType().equals(PlayerType.BAT)).collect(Collectors.toList());
+//        List<String> batsmen = Arrays.asList("P Nissanka","P Stirling","D de Silva","A Balbirnie","G Dockrell","B Rajapaksa");
+//        List<Player> batsmenPlayer = players.stream().filter(player -> batsmen.contains(player.getName())).collect(Collectors.toList());
+        List<Player> batsmenPlayer = players.stream().filter(player -> player.getType().equals(PlayerType.BAT)).collect(Collectors.toList());
         List<List<Player>> batsMens =Generator.subset(batsmenPlayer).simple().stream().filter(playerPlayings -> playerPlayings.size() ==4).toList();
 
 
@@ -98,8 +245,8 @@ public class Strategy {
         }
 
 //        todo: bowlers 3 or 4
-        List<String> batsmenbowlers = Arrays.asList("M Theekshana","B Fernando","L Kumara","J Little","M Adair");
-        List<Player> bowls = players.stream().filter(player -> batsmenbowlers.contains(player.getName())).collect(Collectors.toList());
+//        List<String> batsmenbowlers = Arrays.asList("M Theekshana","B Fernando","L Kumara","J Little","M Adair");
+        List<Player> bowls = players.stream().filter(player -> player.getType().equals(PlayerType.BOWL)).collect(Collectors.toList());
         List<List<Player>> bowlers3 =Generator.subset(bowls).simple().stream().filter(playerPlayings -> playerPlayings.size() ==3).toList();
         List<List<Player>> bowlers4 =Generator.subset(bowls).simple().stream().filter(playerPlayings -> playerPlayings.size() ==4).toList();
 

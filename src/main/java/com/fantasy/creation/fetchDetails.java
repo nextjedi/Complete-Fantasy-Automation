@@ -19,7 +19,7 @@ public class fetchDetails {
 
     public MatchDetails selectProMatch(MatchDetails matchDetails) throws MalformedURLException, InterruptedException {
         AppiumDriver driver = CreateDriverSession.getDriver("",0);
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(5);
         WebElement h = null;
         List<WebElement> hviews =driver.findElements(By.className("android.widget.HorizontalScrollView"));
         for(WebElement m : hviews){
@@ -130,6 +130,7 @@ public class fetchDetails {
 
         TimeUnit.SECONDS.sleep(3);
         System.out.println("Start fetching");
+//        todo improve time
         String time = driver.findElementById("com.app.dream11Pro:id/tvCountDownTimer").getText();
         List<String> timeParse = List.of(time.split(" "));
         int h=0,m=0,s=0;

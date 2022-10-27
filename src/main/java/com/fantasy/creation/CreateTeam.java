@@ -24,15 +24,16 @@ public class CreateTeam {
     public void init(List<FantasyTeamTO> teams, MatchDetails matchDetails) throws MalformedURLException {
 //        todo: create multiple driver session
         List<AppiumDriver> drivers = new ArrayList<>();
-//        drivers.add(CreateDriverSession.getDriver(Uuid.R5CT31D3G4F.name(),4723));
+//        drivers.add(CreateDriverSession.getDriver(Uuid.R5CT31D3G4F.name(),4726));
         drivers.add(CreateDriverSession.getDriver(Uuid.MFM7A6LVH6YTMR8D.name(),4724));
-//        drivers.add(CreateDriverSession.getDriver(Uuid.R5CT20370LT.name()));
+        drivers.add(CreateDriverSession.getDriver(Uuid.b3c76eb6.name(),4725));
 //        todo: distribute teams and call create team for each set
 //        make the create team call multi threaded
         List<List<FantasyTeamTO>> team = new ArrayList<>();
         team.add(teams.subList(0,20));
-        team.add(teams.subList(21,40));
-        team.add(teams.subList(41,teams.size()-1));
+//        team.add(teams.subList(10,40));
+        team.add(teams.subList(10,teams.size()-1));
+        team.add(teams.subList(20,teams.size()-1));
         final Iterator<List<FantasyTeamTO>> teamIt = team.iterator();
         drivers.parallelStream().forEach(driver -> {
             try {
@@ -50,7 +51,7 @@ public class CreateTeam {
     }
     private void create(List<FantasyTeamTO> teams, AppiumDriver driver, MatchDetails matchDetails) throws InterruptedException, IOException {
 
-        boolean garbageFlag = false;
+        boolean garbageFlag = true;
 
 //        call helper function to reach the match
         if(selectProMatch(driver,matchDetails)){
@@ -73,7 +74,7 @@ public class CreateTeam {
             boolean recreateFlag = true;
 
             int cn =0;
-            int skip = 3;
+            int skip = 10;
             for(FantasyTeamTO team:teams){
                 if(cn<skip){
                     cn++;
@@ -92,7 +93,7 @@ public class CreateTeam {
                         System.out.println(text.getText());
                         recreateFlag = false;
                         text.click();
-                        TimeUnit.MILLISECONDS.sleep(700);
+                        TimeUnit.SECONDS.sleep(3);
                         break;
                     }
                 }
@@ -189,7 +190,8 @@ public class CreateTeam {
                 }while (!(wkWeb!= null && batWeb != null && arWeb!=null && bowlWeb !=null));
 
                 if(recreateFlag){
-                    pointsWeb.click();
+                    if(pointsWeb != null)
+                        pointsWeb.click();
                     TimeUnit.MILLISECONDS.sleep(200);
                     clearPlayers(driver,PlayerType.WK);
 
@@ -208,6 +210,8 @@ public class CreateTeam {
 
 
                 if(garbageFlag){
+                    if(pointsWeb != null)
+                        pointsWeb.click();
                     wkWeb.click();
                     TimeUnit.MILLISECONDS.sleep(200);
                     clearPlayers(driver,PlayerType.WK);
@@ -224,6 +228,7 @@ public class CreateTeam {
                     TimeUnit.MILLISECONDS.sleep(200);
                     clearPlayers(driver, PlayerType.BOWL);
                 }else{
+//                    todo: click selected by
                     wkWeb.click();
                     TimeUnit.MILLISECONDS.sleep(200);
                     selectPlayers(driver, PlayerType.WK,team.getWk());
@@ -257,6 +262,49 @@ public class CreateTeam {
                 }
 
                 if(garbageFlag){
+                    WebElement rec = driver.findElementByClassName("androidx.recyclerview.widget.RecyclerView");
+                    List<WebElement> views = rec.findElements(By.className("android.view.ViewGroup"));
+
+                    boolean capFlag = false;
+                    boolean vCapFlag = false;
+                    boolean onceFlag = true;
+                    boolean onceVFlag = true;
+                        int count = 0;
+                        int cCount=cn%5;
+                        int vCount= cn/5+1;
+                        if(cCount == vCount){
+                            cCount++;
+                        }
+                        for (WebElement v : views) {
+                            List<WebElement> texts = v.findElements(By.className("android.widget.TextView"));
+                            count++;
+                            WebElement cap = null;
+                            WebElement vCap = null;
+
+                            for (WebElement t : texts) {
+                                if (t.getText().equals("C")) {
+                                    cap = t;
+                                } else if (t.getText().equals("VC")) {
+                                    vCap = t;
+                                } else if (count == cCount) {
+                                    capFlag = true;
+                                } else if (count == vCount) {
+                                    vCapFlag = true;
+                                }
+                            }
+                            if (capFlag && onceFlag) {
+                                cap.click();
+                                onceFlag = false;
+                            } else if (vCapFlag && onceVFlag) {
+                                vCap.click();
+                                onceVFlag = false;
+                            }
+
+                            if (capFlag && vCapFlag) {
+                                break;
+                            }
+
+                        }
 
                 }else {
                     PointOption source = null;
@@ -312,9 +360,9 @@ public class CreateTeam {
                         if (!(source == null || destination == null || (capFlag && vCapFlag))) {
                             TouchAction actions = new TouchAction(driver);
                             actions.longPress(destination).moveTo(source).release().perform();
-                            TimeUnit.SECONDS.sleep(2);
+                            TimeUnit.MILLISECONDS.sleep(500);
                             actions.tap(destination).perform();
-                            TimeUnit.SECONDS.sleep(1);
+                            TimeUnit.MILLISECONDS.sleep(200);
 //                actions.longPress(PointOption.point(598,1584)).moveTo(PointOption.point(520,977)).release().perform();
                         }
                     } while (!(capFlag && vCapFlag));
@@ -434,9 +482,9 @@ public class CreateTeam {
             if(!(source ==null || destination== null)){
                 TouchAction actions = new TouchAction(driver);
                 actions.longPress(destination).moveTo(source).release().perform();
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(500);
                 actions.tap(destination).perform();
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(100);
 //                actions.longPress(PointOption.point(598,1584)).moveTo(PointOption.point(520,977)).release().perform();
             }
         }while (flag || players.isEmpty());
