@@ -24,16 +24,15 @@ public class CreateTeam {
     public void init(List<FantasyTeamTO> teams, MatchDetails matchDetails) throws MalformedURLException {
 //        todo: create multiple driver session
         List<AppiumDriver> drivers = new ArrayList<>();
-//        drivers.add(CreateDriverSession.getDriver(Uuid.R5CT31D3G4F.name(),4726));
+        drivers.add(CreateDriverSession.getDriver(Uuid.R5CT31D3G4F.name(),4723));
         drivers.add(CreateDriverSession.getDriver(Uuid.MFM7A6LVH6YTMR8D.name(),4724));
         drivers.add(CreateDriverSession.getDriver(Uuid.b3c76eb6.name(),4725));
 //        todo: distribute teams and call create team for each set
 //        make the create team call multi threaded
         List<List<FantasyTeamTO>> team = new ArrayList<>();
         team.add(teams.subList(0,20));
-//        team.add(teams.subList(10,40));
-        team.add(teams.subList(10,teams.size()-1));
-        team.add(teams.subList(20,teams.size()-1));
+        team.add(teams.subList(21,40));
+        team.add(teams.subList(41,60));
         final Iterator<List<FantasyTeamTO>> teamIt = team.iterator();
         drivers.parallelStream().forEach(driver -> {
             try {
@@ -51,7 +50,7 @@ public class CreateTeam {
     }
     private void create(List<FantasyTeamTO> teams, AppiumDriver driver, MatchDetails matchDetails) throws InterruptedException, IOException {
 
-        boolean garbageFlag = true;
+        boolean garbageFlag = false;
 
 //        call helper function to reach the match
         if(selectProMatch(driver,matchDetails)){
@@ -74,7 +73,7 @@ public class CreateTeam {
             boolean recreateFlag = true;
 
             int cn =0;
-            int skip = 10;
+            int skip = 0;
             for(FantasyTeamTO team:teams){
                 if(cn<skip){
                     cn++;

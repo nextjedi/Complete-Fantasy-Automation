@@ -17,10 +17,11 @@ public class CreateDriverSession {
 //        manage open emulators
 //        todo: etc
         if(udid.isBlank()){
-            udid = Uuid.MFM7A6LVH6YTMR8D.name();
+//            default phone
+            udid = Uuid.R5CT31D3G4F.name();
         }
         if(port==0){
-            port = 4724;
+            port = 4723;
         }
 
 

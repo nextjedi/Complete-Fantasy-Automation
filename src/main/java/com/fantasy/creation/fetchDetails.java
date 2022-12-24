@@ -17,40 +17,7 @@ import java.util.stream.Collectors;
 
 public class fetchDetails {
 
-    public MatchDetails selectProMatch(MatchDetails matchDetails) throws MalformedURLException, InterruptedException {
-        AppiumDriver driver = CreateDriverSession.getDriver("",0);
-        TimeUnit.SECONDS.sleep(5);
-        WebElement h = null;
-        List<WebElement> hviews =driver.findElements(By.className("android.widget.HorizontalScrollView"));
-        for(WebElement m : hviews){
-            List<WebElement> txts =m.findElements(By.className("android.widget.TextView"));
-            for(WebElement t:txts){
-                String s= t.getAttribute("content-desc");
-                if(s!= null &&t.getAttribute("content-desc").equals("promotional-card-match-start-time")){
-                    h=m;
-                }
-            }
-        }
-        List<WebElement> texts = h.findElements(By.className("android.widget.TextView"));
 
-        WebElement time = null;
-        for(WebElement t:texts){
-            System.out.println(t.getText());
-            if(t.getText().contains("pm") || t.getText().contains("am")){
-                time = t;
-            }
-            if(t.getText().equals(matchDetails.getFirst().toString())){
-                time.click();
-                TimeUnit.SECONDS.sleep(2);
-                matchDetails =travelMatch(driver,matchDetails);
-                driver.quit();
-                return matchDetails;
-            }
-
-        }
-        driver.quit();
-        return matchDetails;
-    }
     public List<MatchDetails> fetch(MatchDetails nextMatch) throws InterruptedException, MalformedURLException {
         AppiumDriver driver = CreateDriverSession.getDriver("",0);
         List<MatchDetails> matches = new ArrayList<>();
@@ -299,5 +266,38 @@ public class fetchDetails {
         return players.stream().toList();
     }
 
+    public MatchDetails selectProMatch(MatchDetails matchDetails) throws MalformedURLException, InterruptedException {
+        AppiumDriver driver = CreateDriverSession.getDriver("",0);
+        TimeUnit.SECONDS.sleep(5);
+        WebElement h = null;
+        List<WebElement> hviews =driver.findElements(By.className("android.widget.HorizontalScrollView"));
+        for(WebElement m : hviews){
+            List<WebElement> txts =m.findElements(By.className("android.widget.TextView"));
+            for(WebElement t:txts){
+                String s= t.getAttribute("content-desc");
+                if(s!= null &&t.getAttribute("content-desc").equals("promotional-card-match-start-time")){
+                    h=m;
+                }
+            }
+        }
+        List<WebElement> texts = h.findElements(By.className("android.widget.TextView"));
 
+        WebElement time = null;
+        for(WebElement t:texts){
+            System.out.println(t.getText());
+            if(t.getText().contains("pm") || t.getText().contains("am")){
+                time = t;
+            }
+            if(t.getText().equals(matchDetails.getFirst().toString())){
+                time.click();
+                TimeUnit.SECONDS.sleep(2);
+                matchDetails =travelMatch(driver,matchDetails);
+                driver.quit();
+                return matchDetails;
+            }
+
+        }
+        driver.quit();
+        return matchDetails;
+    }
 }

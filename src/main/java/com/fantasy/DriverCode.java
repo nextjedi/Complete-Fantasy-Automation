@@ -20,8 +20,8 @@ public class DriverCode {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         MatchDetails match= new MatchDetails();
-        match.setFirst(Team.SA);
-        match.setSecond(Team.ZIM);
+        match.setFirst(Team.IND);
+        match.setSecond(Team.ENG);
 
         DriverCode driverCode = new DriverCode();
 
