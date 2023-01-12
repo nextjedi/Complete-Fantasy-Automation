@@ -5,10 +5,12 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import java.net.MalformedURLException;
@@ -22,7 +24,11 @@ public class fetchDetails {
     private AppiumDriver driver;
     private void scroll(PointOption source, PointOption destination) throws InterruptedException {
         TouchAction actions = new TouchAction(driver);
-        actions.longPress(destination).moveTo(source).release().perform();
+        actions.press(source)
+                // a bit more reliable when we add small wait
+                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(200)))
+                .moveTo(destination)
+                .release().perform();
         TimeUnit.SECONDS.sleep(2);
     }
 
@@ -30,34 +36,35 @@ public class fetchDetails {
         driver = CreateDriverSession.getDriver("",0);
         List<MatchDetails> matches = new ArrayList<>();
         TimeUnit.SECONDS.sleep(10);
-
-        for(int i = 1; i<7; i++){
+        PointOption destination = PointOption.point(driver.findElementByAccessibilityId("tagCricket").getLocation());
+        for(int i = 1; i<15; i++){
 //            todo: add scrolling feature
             MatchDetails matchDetails = new MatchDetails();
-
             try{
                 WebElement match =driver.findElementByAccessibilityId("Match_Card_"+i);
-                if(match == null){
-                    continue;
+//                driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])").get(2).findElements(By.className("android.widget.TextView")).get(0).getText();
+                List<WebElement> matchesc = driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])");
+                PointOption source = null;
+                for(WebElement matchCard: matchesc){
+                    List<WebElement> texts = match.findElements(By.className("android.widget.TextView"));
+                    List<Team> teamsPlaying = new ArrayList<>();
+                    matchDetails =parseMatchDetails(texts.stream().map(WebElement::getText).collect(Collectors.toList()));
+                    if(nextMatch != null){
+                        match.click();
+                        TimeUnit.SECONDS.sleep(5);
+                        MatchDetails details =travelMatch(driver,matchDetails);
+                        return Collections.singletonList(details);
+                    }else{
+                        matches.add(matchDetails);
+                    }
+
+                    source = PointOption.point(match.getLocation());
                 }
-                List<WebElement> texts = match.findElements(By.className("android.widget.TextView"));
-                List<Team> teamsPlaying = new ArrayList<>();
-                matchDetails =parseMatchDetails(texts.stream().map(WebElement::getText).collect(Collectors.toList()));
-                if(matchDetails == null){
-//                    scroll
-                    continue;
-                }
+                scroll(source,destination);
 
 
 //                todo improve logic
-                if(nextMatch != null){
-                    match.click();
-                    TimeUnit.SECONDS.sleep(5);
-                    MatchDetails details =travelMatch(driver,matchDetails);
-                    return Collections.singletonList(details);
-                }else{
-                    matches.add(matchDetails);
-                }
+
 
 
 
@@ -108,9 +115,9 @@ public class fetchDetails {
             }
         }
         matchDetails.setTeams(teams);
-        if(matchDetails.getTeams().size()<2){
-            return null;
-        }
+//        if(matchDetails.getTeams().size()<2){
+//            return null;
+//        }
         return matchDetails;
     }
 
