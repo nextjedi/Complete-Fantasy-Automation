@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="progress complete">
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="fetching repository">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666879729927</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fetching repository">
+      <created>1671869472912</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1671869472912</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -185,21 +193,12 @@
     <MESSAGE value="completed the layout and framework of operations&#10;3 proper steps need effort" />
     <MESSAGE value="progress" />
     <MESSAGE value="progress complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="progress complete" />
+    <MESSAGE value="fetching repository" />
+    <option name="LAST_COMMIT_MESSAGE" value="fetching repository" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
-          <line>28</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
-          <line>51</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
           <line>382</line>
@@ -236,19 +235,24 @@
           <option name="timeStamp" value="220" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
-          <line>252</line>
-          <option name="timeStamp" value="225" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="230" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
-          <line>282</line>
-          <option name="timeStamp" value="226" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
-          <line>301</line>
-          <option name="timeStamp" value="227" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="256" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

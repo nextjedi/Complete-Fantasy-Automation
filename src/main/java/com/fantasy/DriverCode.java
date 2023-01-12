@@ -21,12 +21,12 @@ public class DriverCode {
 
         MatchDetails match= new MatchDetails();
         match.setFirst(Team.IND);
-        match.setSecond(Team.ENG);
+        match.setSecond(Team.SL);
 
         DriverCode driverCode = new DriverCode();
 
         Instant start = Instant.now();
-//        driverCode.matchesOfTheDay(match);
+        driverCode.matchesOfTheDay(match);
         match =Helper.read(match);
         Strategy strategy =new Strategy();
         Instant end =Instant.now();
@@ -49,7 +49,7 @@ public class DriverCode {
 //    todo schedule run it every day at 12 am
     public void matchesOfTheDay(MatchDetails match) throws MalformedURLException, InterruptedException {
         fetchDetails fetchDetails = new fetchDetails();
-        match = fetchDetails.selectProMatch(match);
+        List<MatchDetails> matches = fetchDetails.fetch(null);
         Helper.write(match);
 
 //        todo write matches to file / db

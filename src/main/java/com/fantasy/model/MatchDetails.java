@@ -6,6 +6,8 @@ import java.util.List;
 
 public class MatchDetails implements Serializable {
     private Date time;
+    private List<Team> teams;
+    private int prizePool;
     private Team first;
     private Team Second;
     private PitchType pitch;
@@ -25,6 +27,22 @@ public class MatchDetails implements Serializable {
         this.avgScore = avgScore;
         Venue = venue;
         this.players = players;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public int getPrizePool() {
+        return prizePool;
+    }
+
+    public void setPrizePool(int prizePool) {
+        this.prizePool = prizePool;
     }
 
     public BowlingType getBowlingType() {

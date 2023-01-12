@@ -25,8 +25,8 @@ public class CreateTeam {
 //        todo: create multiple driver session
         List<AppiumDriver> drivers = new ArrayList<>();
         drivers.add(CreateDriverSession.getDriver(Uuid.R5CT31D3G4F.name(),4723));
-        drivers.add(CreateDriverSession.getDriver(Uuid.MFM7A6LVH6YTMR8D.name(),4724));
-        drivers.add(CreateDriverSession.getDriver(Uuid.b3c76eb6.name(),4725));
+//        drivers.add(CreateDriverSession.getDriver(Uuid.MFM7A6LVH6YTMR8D.name(),4724));
+//        drivers.add(CreateDriverSession.getDriver(Uuid.b3c76eb6.name(),4725));
 //        todo: distribute teams and call create team for each set
 //        make the create team call multi threaded
         List<List<FantasyTeamTO>> team = new ArrayList<>();

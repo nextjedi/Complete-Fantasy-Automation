@@ -4,8 +4,10 @@ import com.fantasy.model.*;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -17,11 +19,18 @@ import java.util.stream.Collectors;
 
 public class fetchDetails {
 
+    private AppiumDriver driver;
+    private void scroll(PointOption source, PointOption destination) throws InterruptedException {
+        TouchAction actions = new TouchAction(driver);
+        actions.longPress(destination).moveTo(source).release().perform();
+        TimeUnit.SECONDS.sleep(2);
+    }
 
     public List<MatchDetails> fetch(MatchDetails nextMatch) throws InterruptedException, MalformedURLException {
-        AppiumDriver driver = CreateDriverSession.getDriver("",0);
+        driver = CreateDriverSession.getDriver("",0);
         List<MatchDetails> matches = new ArrayList<>();
         TimeUnit.SECONDS.sleep(10);
+
         for(int i = 1; i<7; i++){
 //            todo: add scrolling feature
             MatchDetails matchDetails = new MatchDetails();
@@ -33,23 +42,15 @@ public class fetchDetails {
                 }
                 List<WebElement> texts = match.findElements(By.className("android.widget.TextView"));
                 List<Team> teamsPlaying = new ArrayList<>();
-                for(WebElement text:texts){
-                    System.out.println(text.getText());
-                    if(EnumUtils.isValidEnumIgnoreCase(Team.class,text.getText().replaceAll("-",""))){
-                        teamsPlaying.add(Team.valueOf(text.getText().replaceAll("-","")));
-                    }
-//                    todo: fetch time
-//                    todo: fetch prize pool
-//                    todo: fetch tournament name
-                }
-                matchDetails.setFirst(teamsPlaying.get(0));
-                matchDetails.setSecond(teamsPlaying.get(1));
-                if(teamsPlaying.size()!=2){
-                    throw (new Exception("unknown teams"));
+                matchDetails =parseMatchDetails(texts.stream().map(WebElement::getText).collect(Collectors.toList()));
+                if(matchDetails == null){
+//                    scroll
+                    continue;
                 }
 
+
 //                todo improve logic
-                if(nextMatch.getFirst() == null){
+                if(nextMatch != null){
                     match.click();
                     TimeUnit.SECONDS.sleep(5);
                     MatchDetails details =travelMatch(driver,matchDetails);
@@ -66,8 +67,51 @@ public class fetchDetails {
 
 //
         }
-//        todo: filter matches
         return matches;
+    }
+
+    // convert text to details
+    private MatchDetails parseMatchDetails(List<String> texts) {
+        MatchDetails matchDetails = new MatchDetails();
+        List<Team> teams = new ArrayList<>();
+        int crore = 10000000;
+        int lakh = 100000;
+        for(String t:texts){
+            if(EnumUtils.isValidEnumIgnoreCase(Team.class,t.replaceAll("-",""))){
+                Team team = Team.valueOf(t.replaceAll("-", ""));
+                teams.add(team);
+//                ₹25 Crores
+            }else if(t.contains("Crore")){
+                t =t.replaceAll("[^0-9\\.]", "");
+                int n = Integer.parseInt(t);
+                n*=crore;
+                matchDetails.setPrizePool(n);
+            }else if(t.contains("Lakh")){
+                t =t.replaceAll("[^0-9\\.]", "");
+                int n = Integer.parseInt(t);
+                n*=lakh;
+                matchDetails.setPrizePool(n);
+            }else if((t.contains("h")||t.contains("m")) && t.length()<8){
+//                todo: improve time parse
+                String[] time = t.split(" ");
+                int num = Integer.parseInt(time[0].replaceAll("[^0-9\\.]", ""));
+                int num1 = Integer.parseInt(time[1].replaceAll("[^0-9\\.]", ""));
+                int sec = 0;
+                if(time[0].endsWith("h")){
+                    sec =num*3600+num1*60;
+                }else {
+                    sec = num*60+num1;
+                }
+                Date date = Date.from(new Date().toInstant().plusSeconds(sec));
+                matchDetails.setTime(date);
+
+            }
+        }
+        matchDetails.setTeams(teams);
+        if(matchDetails.getTeams().size()<2){
+            return null;
+        }
+        return matchDetails;
     }
 
     public static MatchDetails travelMatch(AppiumDriver driver,MatchDetails matchDetails) throws InterruptedException {

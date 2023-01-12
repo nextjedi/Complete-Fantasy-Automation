@@ -67,7 +67,7 @@ public class Strategy {
                 bowls = bowl4It.next();
             }
             teamPlayers.addAll(bowls);
-//            todo think c vc
+//            todo think c vccmd
             FantasyTeam team = new FantasyTeam(teamPlayers, bats.get(0), bowls.get(0));
             teams.add(team);
 
