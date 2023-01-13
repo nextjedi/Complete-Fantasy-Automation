@@ -2,12 +2,14 @@ package com.fantasy.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 public class MatchDetails implements Serializable {
     private Date time;
     private List<Team> teams;
-    private int prizePool;
+    private float prizePool;
     private Team first;
     private Team Second;
     private PitchType pitch;
@@ -29,6 +31,19 @@ public class MatchDetails implements Serializable {
         this.players = players;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MatchDetails that = (MatchDetails) o;
+        return new HashSet<>(teams).containsAll(that.teams);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teams);
+    }
+
     public List<Team> getTeams() {
         return teams;
     }
@@ -37,11 +52,11 @@ public class MatchDetails implements Serializable {
         this.teams = teams;
     }
 
-    public int getPrizePool() {
+    public float getPrizePool() {
         return prizePool;
     }
 
-    public void setPrizePool(int prizePool) {
+    public void setPrizePool(float prizePool) {
         this.prizePool = prizePool;
     }
 

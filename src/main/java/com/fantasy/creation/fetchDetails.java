@@ -5,6 +5,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.lang3.EnumUtils;
@@ -24,11 +25,7 @@ public class fetchDetails {
     private AppiumDriver driver;
     private void scroll(PointOption source, PointOption destination) throws InterruptedException {
         TouchAction actions = new TouchAction(driver);
-        actions.press(source)
-                // a bit more reliable when we add small wait
-                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(200)))
-                .moveTo(destination)
-                .release().perform();
+        actions.longPress(source).moveTo(destination).release().perform();
         TimeUnit.SECONDS.sleep(2);
     }
 
@@ -36,29 +33,31 @@ public class fetchDetails {
         driver = CreateDriverSession.getDriver("",0);
         List<MatchDetails> matches = new ArrayList<>();
         TimeUnit.SECONDS.sleep(10);
+
         PointOption destination = PointOption.point(driver.findElementByAccessibilityId("tagCricket").getLocation());
-        for(int i = 1; i<15; i++){
+        for(int i = 0; i<6; i++){
 //            todo: add scrolling feature
             MatchDetails matchDetails = new MatchDetails();
             try{
-                WebElement match =driver.findElementByAccessibilityId("Match_Card_"+i);
+//                WebElement match =driver.findElementByAccessibilityId("Match_Card_"+i);
 //                driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])").get(2).findElements(By.className("android.widget.TextView")).get(0).getText();
-                List<WebElement> matchesc = driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])");
+                List<AndroidElement> matchesc = driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])");
                 PointOption source = null;
-                for(WebElement matchCard: matchesc){
-                    List<WebElement> texts = match.findElements(By.className("android.widget.TextView"));
+                for(AndroidElement matchCard: matchesc){
+                    List<MobileElement> texts = matchCard.findElementsByClassName("android.widget.TextView");
                     List<Team> teamsPlaying = new ArrayList<>();
                     matchDetails =parseMatchDetails(texts.stream().map(WebElement::getText).collect(Collectors.toList()));
-                    if(nextMatch != null){
-                        match.click();
+                    if(nextMatch!=null &&nextMatch.equals(matchDetails)){
+                        matchCard.click();
                         TimeUnit.SECONDS.sleep(5);
                         MatchDetails details =travelMatch(driver,matchDetails);
                         return Collections.singletonList(details);
                     }else{
-                        matches.add(matchDetails);
+                        if(matchDetails !=null)
+                            matches.add(matchDetails);
                     }
+                    source = PointOption.point(matchCard.getCenter());
 
-                    source = PointOption.point(match.getLocation());
                 }
                 scroll(source,destination);
 
@@ -90,19 +89,21 @@ public class fetchDetails {
 //                ₹25 Crores
             }else if(t.contains("Crore")){
                 t =t.replaceAll("[^0-9\\.]", "");
-                int n = Integer.parseInt(t);
+                float n =Float.valueOf(t);
                 n*=crore;
                 matchDetails.setPrizePool(n);
             }else if(t.contains("Lakh")){
                 t =t.replaceAll("[^0-9\\.]", "");
-                int n = Integer.parseInt(t);
+                float n =Float.valueOf(t);
                 n*=lakh;
                 matchDetails.setPrizePool(n);
             }else if((t.contains("h")||t.contains("m")) && t.length()<8){
 //                todo: improve time parse
                 String[] time = t.split(" ");
                 int num = Integer.parseInt(time[0].replaceAll("[^0-9\\.]", ""));
-                int num1 = Integer.parseInt(time[1].replaceAll("[^0-9\\.]", ""));
+                int num1 = 0;
+                if(time.length ==2)
+                    num1 = Integer.parseInt(time[1].replaceAll("[^0-9\\.]", ""));
                 int sec = 0;
                 if(time[0].endsWith("h")){
                     sec =num*3600+num1*60;
@@ -115,9 +116,9 @@ public class fetchDetails {
             }
         }
         matchDetails.setTeams(teams);
-//        if(matchDetails.getTeams().size()<2){
-//            return null;
-//        }
+        if(matchDetails.getTeams().size()!=2){
+            return null;
+        }
         return matchDetails;
     }
 
@@ -127,7 +128,7 @@ public class fetchDetails {
         List<MobileElement> d = driver.findElementsByClassName("android.widget.TextView");
         MobileElement teams = null;
         for(var team:d){
-            if(team.getText().equals("My Teams")){
+            if(team.getText().contains("My Teams")){
                 System.out.println(team.getText());
                 teams = team;
                 break;
@@ -136,10 +137,10 @@ public class fetchDetails {
         assert teams != null;
         teams.click();
         TimeUnit.SECONDS.sleep(3);
-        d = driver.findElementsByClassName("android.widget.Button");
+        d = driver.findElementsByClassName("android.widget.TextView");
         for(var team:d){
             System.out.println(team.getText());
-            if(team.getText().equals("CREATE A TEAM") || team.getText().equals("CREATE TEAM")){
+            if(team.getText().contains("CREATE A TEAM") || team.getText().equals("CREATE TEAM")){
                 System.out.println(team.getText());
                 team.click();
                 break;
@@ -149,57 +150,30 @@ public class fetchDetails {
         TimeUnit.SECONDS.sleep(3);
         System.out.println("Start fetching");
 //        todo improve time
-        String time = driver.findElementById("com.app.dream11Pro:id/tvCountDownTimer").getText();
-        List<String> timeParse = List.of(time.split(" "));
-        int h=0,m=0,s=0;
-        int num=0;
-        for(char ch : timeParse.get(0).toCharArray()){
-
-            if(Character.isDigit(ch)){
-                num =num *10+Integer.parseInt(String.valueOf(ch));
-            }else{
-                if(ch=='h'){
-                    h=num;
-                }else{
-                    m=num;
-                }
-            }
-        }
-        num=0;
-        for(char ch : timeParse.get(1).toCharArray()){
-
-            if(Character.isDigit(ch)){
-                num =num *10+Integer.parseInt(String.valueOf(ch));
-            }else{
-                if(ch=='m'){
-                    m=num;
-                }else{
-                    s=num;
-                }
-            }
-        }
-        Date t = Date.from(Instant.now().plusSeconds(h * 3600 + m * 60 + s));
-        matchDetails.setTime(t);
         String toss = "";
 //                TODO: batting first and second who won the toss
 //        team won the toss and elected to bat/ bowl first parse
 
-
-        WebElement fc =driver.findElementByAccessibilityId("fc_Banner");
-        WebElement fcs = fc.findElement(By.className("androidx.recyclerview.widget.RecyclerView"));
-        List<WebElement> fcsv = fcs.findElements(By.className("android.view.ViewGroup"));
-        for(WebElement view:fcsv){
-            switch (view.findElements(By.className("android.widget.TextView")).get(0).getText()) {
-                case "Pitch" ->
-                        matchDetails.setPitch(PitchType.valueOf(view.findElements(By.className("android.widget.TextView")).get(1).getText().toUpperCase()));
-                case "Good for" ->
-                        matchDetails.setBowlingType(BowlingType.valueOf(view.findElements(By.className("android.widget.TextView")).get(1).getText().toUpperCase()));
-                case "Avg. Score" ->
-                        matchDetails.setAvgScore(Integer.parseInt(view.findElements(By.className("android.widget.TextView")).get(1).getText()));
+        try{
+            WebElement fc =driver.findElementByAccessibilityId("fc_Banner");
+            WebElement fcs = fc.findElement(By.className("androidx.recyclerview.widget.RecyclerView"));
+            List<WebElement> fcsv = fcs.findElements(By.className("android.view.ViewGroup"));
+            for(WebElement view:fcsv){
+                switch (view.findElements(By.className("android.widget.TextView")).get(0).getText()) {
+                    case "Pitch" ->
+                            matchDetails.setPitch(PitchType.valueOf(view.findElements(By.className("android.widget.TextView")).get(1).getText().toUpperCase()));
+                    case "Good for" ->
+                            matchDetails.setBowlingType(BowlingType.valueOf(view.findElements(By.className("android.widget.TextView")).get(1).getText().toUpperCase()));
+                    case "Avg. Score" ->
+                            matchDetails.setAvgScore(Integer.parseInt(view.findElements(By.className("android.widget.TextView")).get(1).getText()));
 //                case "Venue" ->
 //                        matchDetails.setVenue(view.findElements(By.className("android.widget.TextView")).get(1).getText());
+                }
             }
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
         }
+
 
         //players fetch
         List<Player> players = new ArrayList<>();

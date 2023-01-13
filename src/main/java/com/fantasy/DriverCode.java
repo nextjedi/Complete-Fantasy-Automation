@@ -12,6 +12,8 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -26,7 +28,7 @@ public class DriverCode {
         DriverCode driverCode = new DriverCode();
 
         Instant start = Instant.now();
-        driverCode.matchesOfTheDay(match);
+        driverCode.matchesOfTheDay();
         match =Helper.read(match);
         Strategy strategy =new Strategy();
         Instant end =Instant.now();
@@ -47,13 +49,27 @@ public class DriverCode {
     }
 
 //    todo schedule run it every day at 12 am
-    public void matchesOfTheDay(MatchDetails match) throws MalformedURLException, InterruptedException {
+    public void matchesOfTheDay() throws MalformedURLException, InterruptedException {
+        List<MatchDetails> matches = Helper.read(LocalDate.now()+".txt");
         fetchDetails fetchDetails = new fetchDetails();
-        List<MatchDetails> matches = fetchDetails.fetch(null);
-        Helper.write(match);
+        if(matches==null){
+            matches = fetchDetails.fetch(null);
+            matches =matches.stream().filter(matchDetails -> matchDetails.getPrizePool()>9000000).collect(Collectors.toList());
+            Helper.write(matches);
+        }
+
+        for (MatchDetails match:matches){
+            if(Helper.read(match)==null){
+                List<MatchDetails> m = fetchDetails.fetch(match);
+                Helper.write(m.get(0));
+            }
+
+        }
+
 
 //        todo write matches to file / db
     }
+
 //    todo run it as soon as the data arrives
 //    todo run at the designated time
     public void createTeam(MatchDetails matchDetails) throws MalformedURLException, InterruptedException {
