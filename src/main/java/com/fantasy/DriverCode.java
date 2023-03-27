@@ -21,35 +21,30 @@ import java.util.stream.Collectors;
 public class DriverCode {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        MatchDetails match= new MatchDetails();
-        match.setFirst(Team.IND);
-        match.setSecond(Team.SL);
-
         DriverCode driverCode = new DriverCode();
 
         Instant start = Instant.now();
-        driverCode.matchesOfTheDay();
-        match =Helper.read(match);
-        Strategy strategy =new Strategy();
-        Instant end =Instant.now();
-        System.out.println("read matches"+Duration.between(start,end));
-        start = Instant.now();
+        List<MatchDetails> matches = driverCode.matchesOfTheDay();
 
-        List<FantasyTeamTO> teams =strategy.blackBox(match);
-        end =Instant.now();
-        System.out.println("strategy"+Duration.between(start,end));
+        for (MatchDetails match: matches
+             ) {
+            Instant matchs = Instant.now();
+            driverCode.createTeam(match,false);
+            Instant matche = Instant.now();
+            System.out.println(matche.minusSeconds(matchs.getEpochSecond())+match.getTeams().get(0).toString());
+        }
 
-        int count = match.getPlayers().size();
-        CreateTeam team = new CreateTeam();
-        start = Instant.now();
-        team.init(teams,match);
-        end =Instant.now();
-        System.out.println( "create teams"+Duration.between(start,end));
-
+        for (MatchDetails match: matches
+        ) {
+            Instant matchs = Instant.now();
+            driverCode.createTeam(match,true);
+            Instant matche = Instant.now();
+            System.out.println(matche.minusSeconds(matchs.getEpochSecond())+match.getTeams().get(0).toString());
+        }
     }
 
 //    todo schedule run it every day at 12 am
-    public void matchesOfTheDay() throws MalformedURLException, InterruptedException {
+    public List<MatchDetails> matchesOfTheDay() throws MalformedURLException, InterruptedException {
         List<MatchDetails> matches = Helper.read(LocalDate.now()+".txt");
         fetchDetails fetchDetails = new fetchDetails();
         if(matches==null){
@@ -63,26 +58,20 @@ public class DriverCode {
                 List<MatchDetails> m = fetchDetails.fetch(match);
                 Helper.write(m.get(0));
             }
-
         }
-
-
-//        todo write matches to file / db
+        return matches;
     }
 
 //    todo run it as soon as the data arrives
 //    todo run at the designated time
-    public void createTeam(MatchDetails matchDetails) throws MalformedURLException, InterruptedException {
-//        todo fetch team
-        fetchDetails fetchDetails = new fetchDetails();
-        List<MatchDetails> matches = fetchDetails.fetch(matchDetails);
-//        todo implement strategy
-//        todo verify if present
+    public void createTeam(MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException, InterruptedException {
+
+        matchDetails = Helper.read(matchDetails);
         Strategy strategy =new Strategy();
-        List<FantasyTeamTO> teams =strategy.blackBox(matches.get(0));
+        List<FantasyTeamTO> teams =strategy.blackBox(matchDetails);
 //        todo create teams/ edit teams
         CreateTeam team = new CreateTeam();
-        team.init(teams,matches.get(0));
+        team.init(teams,matchDetails,recreateFlag);
     }
 
 

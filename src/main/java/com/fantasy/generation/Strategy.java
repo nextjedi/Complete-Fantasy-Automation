@@ -19,11 +19,11 @@ public class Strategy {
 //        different strategies
         List<Player> players = matchDetails.getPlayers().stream().filter(Player::isPlaying).collect(Collectors.toList());
 //        players = matchDetails.getPlayers();
-//        players = matchDetails.getPlayers().stream().filter(player -> player.getSelectedBy()>15).collect(Collectors.toList());
+        players = matchDetails.getPlayers().stream().filter(player -> player.getSelectedBy()>15).collect(Collectors.toList());
 
-        first = matchDetails.getFirst();
-        second = matchDetails.getSecond();
-        List<FantasyTeam> teams = cvcBased(players);
+        first = matchDetails.getTeams().get(0);
+        second = matchDetails.getTeams().get(1);
+        List<FantasyTeam> teams = sunnyRandom(players);
 
 
 
@@ -352,31 +352,18 @@ public class Strategy {
 
         List<Player> rr =players.stream().filter(playerPlaying -> playerPlaying.getTeam().equals(second)).collect(Collectors.toList());
         List<Player> mi =players.stream().filter(playerPlaying -> playerPlaying.getTeam().equals(first)).collect(Collectors.toList());
-        List<FantasyTeam> teams = new ArrayList<>();
-        while (teams.size() < 20)
-        {
-            List<Player> temp = new ArrayList<>();
-            for(int i=0;i<11;i++)
-            {
-                Player p1 = rr.get(i);
-                Player p2 = mi.get(i);
-                int r = ((int) (Math.random()*100) % 2);
-                if(r == 0)
-                    temp.add(p1);
-                else
-                    temp.add(p2);
-            }
-            int c =  ((int) (Math.random()*100) % 6);
-            int vc =  ((int) (Math.random()*100) % 6);
-            while(c==vc)
-                vc =  ((int) (Math.random()*100) % 6);
-            FantasyTeam fantasyTeam2 = new FantasyTeam(temp.stream().collect(Collectors.toSet()), temp.get(c),temp.get(vc));
+        List<List<Player>> pls = Generator.subset(players).simple().stream().filter(playerPlayings -> playerPlayings.size() == 11).toList();
+        Set<FantasyTeam> teams = new HashSet<>();
+        for(List<Player> p:pls){
+            FantasyTeam fantasyTeam2 = new FantasyTeam(p.stream().collect(Collectors.toSet()), p.get(0),p.get(1));
             if(fantasyTeam2.isValid()){
                 teams.add(fantasyTeam2);
+                if(teams.size() == 20){
+                    return teams.stream().toList();
+                }
             }
-
         }
-        return teams;
+        return teams.stream().toList();
     }
 
     private List<FantasyTeam> top3plus4(List<Player> players){

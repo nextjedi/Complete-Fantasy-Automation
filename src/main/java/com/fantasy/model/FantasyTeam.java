@@ -48,12 +48,12 @@ public class FantasyTeam {
         long al = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.AR)).count();
         long bowl = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BOWL)).count();
 
-        if(!((3<=bat&& bat<=6) &&(3<=bowl&& bowl<=6) && (1<=al&& al<=4) && (1<=wk&& wk<=4))){
+        if(!((1<=bat&& bat<=8) &&(1<=bowl&& bowl<=8) && (1<=al&& al<=8) && (1<=wk&& wk<=8))){
             return false;
         }
         Team team = players.iterator().next().getTeam();
         int teamCount = (int) players.stream().filter(player -> player.getTeam().equals(team)).count();
-        if(teamCount<4 || teamCount >7){
+        if(teamCount<1 || teamCount >10){
             return false;
         }
 

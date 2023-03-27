@@ -1,6 +1,7 @@
 package com.fantasy.model;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Objects;
 
 public class Player implements Serializable {
@@ -30,12 +31,26 @@ public class Player implements Serializable {
         this.battingOrder = battinOrder;
     }
 
+    public Player(Map<String,String> playerMap,PlayerType type) {
+        this.name = playerMap.getOrDefault("player_name","");
+        this.credit = Float.valueOf(playerMap.getOrDefault("players-credits","0"));
+        this.type = type;
+        this.isPlaying = false;
+        this.selectedBy = Float.valueOf(playerMap.getOrDefault("select-by-percent","").replaceAll("[^0-9\\.]", ""));
+        this.points = Integer.parseInt(playerMap.getOrDefault("player-points","0"));
+        this.team = Team.valueOf(playerMap.getOrDefault("squad_name","").replaceAll("-",""));
+        this.battingOrder = -1;
+    }
+    public boolean isValid(){
+        return !(name.isBlank() || team == null || credit == 0);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return name.equals(player.name);
+        return name.toLowerCase().equals(player.getName().toLowerCase()) && type.equals(player.getType()) && points == player.getPoints();
     }
 
     @Override
