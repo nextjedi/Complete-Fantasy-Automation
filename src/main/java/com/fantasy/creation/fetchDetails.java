@@ -33,7 +33,6 @@ public class fetchDetails {
 
         PointOption destination = PointOption.point(driver.findElementByAccessibilityId("tagCricket").getLocation().moveBy(0,500));
         for(int i = 0; i<6; i++){
-//            todo: add scrolling feature
             MatchDetails matchDetails = new MatchDetails();
             try{
 //                WebElement match =driver.findElementByAccessibilityId("Match_Card_"+i);

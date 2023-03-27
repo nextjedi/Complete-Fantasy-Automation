@@ -39,9 +39,6 @@ public class FantasyTeam {
         this.vCaptain = vcaptain;
     }
     public boolean isValid(){
-//        validate before creating
-//        todo: yet to complete validation
-//        distinct players
 
         long bat = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BAT)).count();
         long wk = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.WK)).count();

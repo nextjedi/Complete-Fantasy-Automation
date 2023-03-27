@@ -57,6 +57,11 @@ public class CreateTeam {
 
         int numberOfTeamsAlreadyCreated=Helper.findMatch(matchDetails,driver,false);
         if(numberOfTeamsAlreadyCreated !=-1){
+            if(!recreateFlag){
+                if(numberOfTeamsAlreadyCreated ==20){
+                    return;
+                }
+            }
             int cn =1;
             int skip = numberOfTeamsAlreadyCreated;
             for(FantasyTeamTO team:teams){
@@ -66,7 +71,7 @@ public class CreateTeam {
                     cn++;
                     continue;
                 }
-                cn++;
+
                 if(cn >20){
                     System.out.println("done");
                     break;
@@ -90,7 +95,7 @@ public class CreateTeam {
                 }
 
 
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(4);
 
 
                 //        fetch buttons
@@ -99,19 +104,19 @@ public class CreateTeam {
                 if(recreateFlag){
                     button.getWkWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.WK);
+                    Helper.clearPlayers(driver, PlayerType.WK,button.getWkWeb());
 
                     button.getBatWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.BAT);
+                    Helper.clearPlayers(driver, PlayerType.BAT,button.getBatWeb());
 
                     button.getArWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.AR);
+                    Helper.clearPlayers(driver, PlayerType.AR,button.getArWeb());
 
                     button.getBowlWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.BOWL);
+                    Helper.clearPlayers(driver, PlayerType.BOWL,button.getBowlWeb());
                 }
 
                 button.getWkWeb().click();
@@ -188,6 +193,7 @@ public class CreateTeam {
                 }else {
                     System.out.println("error resolve");
                 }
+                cn++;
             }
         }
     }
@@ -204,9 +210,17 @@ public class CreateTeam {
         int i = 0;
         WebElement preview = driver.findElementByAccessibilityId("team_preview_icon");
         do {
-            String playerRow = "CREATE_TEAM_PLAYER_ITEM_VIEW-" + i + "-selected";
+            String playerRow = "CREATE_TEAM_PLAYER_ITEM_VIEW-"+i+"-unselected";
+            String playerRowAlternate = "CREATE_TEAM_PLAYER_ITEM_VIEW-"+i+"-selected";
+
             try {
-                WebElement pls = driver.findElementByAccessibilityId(playerRow);
+                WebElement pls = null;
+                try {
+                    pls = driver.findElementByAccessibilityId(playerRow);
+                }catch (NoSuchElementException ex){
+                    pls = driver.findElementByAccessibilityId(playerRowAlternate);
+                    System.out.println(playerRowAlternate);
+                }
                 behindFlag =Helper.isPointInRectangle(pls.getRect(),preview.getLocation());
                 List<WebElement> playerDetails = pls.findElements(By.className("android.widget.TextView"));
                 if (i == 0) {

@@ -18,12 +18,12 @@ public class Strategy {
 //        match simulator based on batting and bowling order getting master list of teams
 //        different strategies
         List<Player> players = matchDetails.getPlayers().stream().filter(Player::isPlaying).collect(Collectors.toList());
-//        players = matchDetails.getPlayers();
-        players = matchDetails.getPlayers().stream().filter(player -> player.getSelectedBy()>15).collect(Collectors.toList());
+        players = matchDetails.getPlayers();
+//        players = matchDetails.getPlayers().stream().filter(player -> player.getSelectedBy()>15).collect(Collectors.toList());
 
         first = matchDetails.getTeams().get(0);
         second = matchDetails.getTeams().get(1);
-        List<FantasyTeam> teams = sunnyRandom(players);
+        List<FantasyTeam> teams = garbageStrategy(players);
 
 
 
@@ -358,12 +358,59 @@ public class Strategy {
             FantasyTeam fantasyTeam2 = new FantasyTeam(p.stream().collect(Collectors.toSet()), p.get(0),p.get(1));
             if(fantasyTeam2.isValid()){
                 teams.add(fantasyTeam2);
-                if(teams.size() == 20){
-                    return teams.stream().toList();
+                if(teams.size() == 80){
+                    List<FantasyTeam> t = teams.stream().toList();
+                    return t.subList(25,45);
                 }
             }
         }
         return teams.stream().toList();
+    }
+
+    private List<FantasyTeam> garbageStrategy(List<Player> players){
+
+        List<Player> wk =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.WK)).collect(Collectors.toList());
+        Collections.sort(wk,(o1, o2) -> (int) (o2.getCredit()-o1.getCredit()));
+        List<Player> wk1 = wk.subList(0, 3);
+        List<Player> wk2 = wk.subList(1, 4);
+
+        List<Player> bat =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BAT)).collect(Collectors.toList());
+        Collections.sort(bat,(o1, o2) -> (int) (o2.getCredit()-o1.getCredit()));
+        List<Player> bat1 = bat.subList(0, 3);
+        List<Player> bat2 = bat.subList(1, 4);
+
+        List<Player> bowl =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BOWL)).collect(Collectors.toList());
+        Collections.sort(bowl,(o1, o2) -> (int) (o2.getCredit()-o1.getCredit()));
+        List<Player> bowl1 = bowl.subList(0, 3);
+        List<Player> bowl2 = bowl.subList(1, 4);
+
+        List<Player> ar =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.AR)).collect(Collectors.toList());
+        Collections.sort(ar,(o1, o2) -> (int) (o2.getCredit()-o1.getCredit()));
+        List<Player> ar1 = ar.subList(0, 2);
+        List<Player> ar2 = ar.subList(1, 3);
+
+        List<List<Player>> teamPlayers = new ArrayList<>();
+
+        teamPlayers.add(Stream.of(wk1,bat1,bowl1,ar1).flatMap(Collection::stream)
+                .collect(Collectors.toList()));
+        teamPlayers.add(Stream.of(wk2,bat2,bowl2,ar2).flatMap(Collection::stream)
+                .collect(Collectors.toList()));
+        List<FantasyTeam> teams = new ArrayList<>();
+        for (List<Player> p:teamPlayers){
+            for(int i=0;i<5;i++){
+                for(int j=0;j<5;j++){
+                    if(i==j)
+                        continue;
+                    FantasyTeam team = new FantasyTeam(p.stream().collect(Collectors.toSet()), p.get(i), p.get(j));
+                    if(team.isValid()){
+                        teams.add(team);
+                    }
+                }
+            }
+
+        }
+
+        return teams;
     }
 
     private List<FantasyTeam> top3plus4(List<Player> players){

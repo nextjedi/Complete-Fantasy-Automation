@@ -26,13 +26,13 @@ public class DriverCode {
         Instant start = Instant.now();
         List<MatchDetails> matches = driverCode.matchesOfTheDay();
 
-        for (MatchDetails match: matches
-             ) {
-            Instant matchs = Instant.now();
-            driverCode.createTeam(match,false);
-            Instant matche = Instant.now();
-            System.out.println(matche.minusSeconds(matchs.getEpochSecond())+match.getTeams().get(0).toString());
-        }
+//        for (MatchDetails match: matches
+//             ) {
+//            Instant matchs = Instant.now();
+//            driverCode.createTeam(match,false);
+//            Instant matche = Instant.now();
+//            System.out.println(matche.minusSeconds(matchs.getEpochSecond())+match.getTeams().get(0).toString());
+//        }
 
         for (MatchDetails match: matches
         ) {
