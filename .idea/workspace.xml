@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="on the verge of a milestone" />
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="on the verge of a milestone">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDeviceRecreateCount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Uuid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Udid.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +27,7 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -35,6 +48,9 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/fantasy/generation&quot;
   }
 }</component>
@@ -43,9 +59,15 @@
       <recent name="C:\Users\nextjedi\IdeaProjects\dream11automation\src\main\java\com\fantasy\generation" />
       <recent name="C:\Users\nextjedi\IdeaProjects\dream11automation\src\main\resources" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.fantasy.model" />
       <recent name="main" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.fantasy.creation" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.fantasy.generation" />
@@ -193,7 +215,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679921865573</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="on the verge of a milestone">
+      <created>1679922171077</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1679922171077</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,18 +254,58 @@
       <breakpoints>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
-          <line>416</line>
+          <line>424</line>
           <option name="timeStamp" value="143" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java</url>
-          <line>332</line>
-          <option name="timeStamp" value="463" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java</url>
+          <line>290</line>
+          <option name="timeStamp" value="503" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java</url>
+          <line>111</line>
+          <option name="timeStamp" value="519" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/fetchDetails.java</url>
+          <line>120</line>
+          <option name="timeStamp" value="529" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java</url>
-          <line>41</line>
-          <option name="timeStamp" value="468" />
+          <line>70</line>
+          <option name="timeStamp" value="535" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java</url>
+          <line>222</line>
+          <option name="timeStamp" value="544" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="545" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
+          <line>309</line>
+          <option name="timeStamp" value="552" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
+          <line>265</line>
+          <option name="timeStamp" value="554" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
+          <line>241</line>
+          <option name="timeStamp" value="555" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java</url>
+          <line>285</line>
+          <option name="timeStamp" value="556" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

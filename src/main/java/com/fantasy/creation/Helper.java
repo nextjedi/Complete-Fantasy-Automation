@@ -14,6 +14,7 @@ import org.openqa.selenium.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -66,6 +67,13 @@ public class Helper {
         return player;
     }
 
+    public static void TeamsRecreatedRead(){
+
+    }
+    public static void TeamsRecreatedWrite(){
+
+    }
+
     public static void write(List<MatchDetails> matches){
 
 
@@ -73,6 +81,22 @@ public class Helper {
             FileOutputStream f = new FileOutputStream(LocalDate.now() +".txt");
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(matches);
+            o.close();
+            f.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+    }
+    public static void write(MatchDetails match,String name){
+
+
+        try {
+            FileOutputStream f = new FileOutputStream(name+".txt");
+            ObjectOutputStream o = new ObjectOutputStream(f);
+            o.writeObject(match);
             o.close();
             f.close();
         } catch (IOException e) {
@@ -103,6 +127,18 @@ public class Helper {
             FileInputStream fi = new FileInputStream(match);
             ObjectInputStream oi = new ObjectInputStream(fi);
             return (List<MatchDetails>) oi.readObject();
+
+        } catch (IOException e) {
+            return null;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static MatchDetails read(String m,String name) {
+        try {
+            FileInputStream fi = new FileInputStream(name);
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            return (MatchDetails) oi.readObject();
 
         } catch (IOException e) {
             return null;
@@ -217,6 +253,7 @@ public class Helper {
                         TouchAction actions = new TouchAction(driver);
                         actions.longPress(destination).moveTo(source).release().perform();
                         TimeUnit.SECONDS.sleep(2);
+                        actions.tap(source).perform();
                     }
                     continue;
 
@@ -243,22 +280,37 @@ public class Helper {
     }
 
     public static boolean SelectTeamToEdit(int teamNo, AppiumDriver driver){
-        int scrollOffset = (int) (driver.manage().window().getSize().getHeight()*0.6)*-1;
+        int scrollOffset = (int) (driver.manage().window().getSize().getHeight()*0.5)*-1;
         int currentTeam = 0;
         do {
+
             List<WebElement> teamCards = driver.findElementsByXPath("//android.view.ViewGroup[@content-desc=\"TeamCard\"]");
             for (WebElement teamCard : teamCards) {
                 try {
-                    String tNo = teamCard.findElement(By.xpath("//android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[2]")).getText();
-                    currentTeam = Integer.parseInt(tNo.replaceAll("[^0-9.]", ""));
-                    System.out.println(currentTeam);
+                    List<WebElement> teamNames = teamCard.findElements(By.className("android.widget.TextView"));
+                    for (WebElement teamCandidate:teamNames){
+                        String text = teamCandidate.getText();
+                        if(text.startsWith("(T")){
+                            currentTeam = Integer.parseInt(text.replaceAll("[^0-9.]", ""));
+                            break;
+                        }
+                    }
+                    System.out.println(currentTeam +" - "+teamNo);
                     if (currentTeam == teamNo) {
                         WebElement editButton = teamCard.findElement(By.xpath("//android.view.ViewGroup[@content-desc=\"my-teams-edit-team\"]"));
                         editButton.click();
                         return true;
-                    } else if (teamNo - currentTeam > 4) {
+                    } else if (teamNo - currentTeam >= 4) {
                         try {
                             scroll(PointOption.point(teamCard.getLocation()), PointOption.point(teamCard.getLocation().moveBy(0, scrollOffset)), driver);
+                        } catch (InterruptedException ignored) {
+
+                        } finally {
+                            break;
+                        }
+                    }else if (currentTeam >teamNo ){
+                        try {
+                            scroll(PointOption.point(teamCard.getLocation()), PointOption.point(teamCard.getLocation().moveBy(0, (int) (scrollOffset*-0.5))), driver);
                         } catch (InterruptedException ignored) {
 
                         } finally {
@@ -276,6 +328,7 @@ public class Helper {
     }
 
     public static void clearPlayers(AppiumDriver driver,PlayerType type,WebElement category) throws InterruptedException {
+//        handle infifinite loop
         PointOption source = null;
         PointOption destination = null;
         boolean behindFlag;
@@ -353,7 +406,11 @@ public class Helper {
 
     public static int findMatch(MatchDetails nextMatch,AppiumDriver driver, Boolean isContest) throws InterruptedException {
 
-        PointOption destination = PointOption.point(driver.findElementByAccessibilityId("tagCricket").getLocation().moveBy(0,500));
+
+        WebElement cricket = driver.findElementByAccessibilityId("tagCricket");
+        PointOption destinationOff = PointOption.point(cricket.getLocation());
+        PointOption destination = PointOption.point(cricket.getLocation().moveBy(0,500));
+        Helper.scroll(destinationOff,destination,driver);
         for(int i = 0; i<6; i++){
             MatchDetails matchDetails = new MatchDetails();
             try{
@@ -390,6 +447,37 @@ public class Helper {
 //
         }
         return -1;
+    }
+
+    public static int getEventMatchToCreateTeam(MatchDetails matchDetails,AppiumDriver driver,boolean isContest) throws MalformedURLException, InterruptedException {
+        TimeUnit.SECONDS.sleep(10);
+        try {
+            WebElement timeElement = driver.findElementByAccessibilityId("promotional-card-match-start-time");
+            List<Team> teams = new ArrayList<>();
+            teams.add(Team.valueOf(driver.findElementByAccessibilityId("promotional-card-team-1-name").getText()));
+            teams.add(Team.valueOf(driver.findElementByAccessibilityId("promotional-card-team-2-name").getText()));
+            matchDetails.setTeams(teams);
+            String time = timeElement.getText();
+            String timer = driver.findElementByAccessibilityId("timer").getText();
+            if(matchDetails.getTeams().equals(teams))
+                timeElement.click();
+            TimeUnit.SECONDS.sleep(5);
+            if(isContest){
+                driver.findElementByAccessibilityId("btnContests").click();
+                return 0;
+//                            click on contest
+            }else {
+                WebElement myTeam = driver.findElementByAccessibilityId("btnMy Teams");
+                int teamCount = Integer.parseInt(myTeam.findElement(By.className("android.widget.TextView")).getText().replaceAll("[^0-9\\.]", ""));
+                myTeam.click();
+                return teamCount;
+            }
+
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return -2;
     }
 
     public static boolean isPointInRectangle(Rectangle rectangle, Point point){

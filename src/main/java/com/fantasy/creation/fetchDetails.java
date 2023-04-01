@@ -26,17 +26,43 @@ public class fetchDetails {
 
     private AppiumDriver driver;
 
+    public MatchDetails getEventMatch() throws MalformedURLException, InterruptedException {
+        driver = CreateDriverSession.getDriver("", 0);
+        List<MatchDetails> matches = new ArrayList<>();
+        TimeUnit.SECONDS.sleep(10);
+            MatchDetails matchDetails = new MatchDetails();
+
+            try {
+                WebElement timeElement = driver.findElementByAccessibilityId("promotional-card-match-start-time");
+                List<Team> teams = new ArrayList<>();
+                teams.add(Team.valueOf(driver.findElementByAccessibilityId("promotional-card-team-1-name").getText()));
+                teams.add(Team.valueOf(driver.findElementByAccessibilityId("promotional-card-team-2-name").getText()));
+                matchDetails.setTeams(teams);
+                String time = timeElement.getText();
+                String timer = driver.findElementByAccessibilityId("timer").getText();
+                timeElement.click();
+
+                MatchDetails details = getPlayersFromMatch(matchDetails);
+                return details;
+
+
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+            return null;
+    }
+
     public List<MatchDetails> fetch(MatchDetails nextMatch) throws InterruptedException, MalformedURLException {
         driver = CreateDriverSession.getDriver("",0);
         List<MatchDetails> matches = new ArrayList<>();
         TimeUnit.SECONDS.sleep(10);
-
-        PointOption destination = PointOption.point(driver.findElementByAccessibilityId("tagCricket").getLocation().moveBy(0,500));
+        WebElement cricket = driver.findElementByAccessibilityId("tagCricket");
+        PointOption destinationOff = PointOption.point(cricket.getLocation());
+        PointOption destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
+        Helper.scroll(destinationOff, destination, driver);
         for(int i = 0; i<6; i++){
             MatchDetails matchDetails = new MatchDetails();
             try{
-//                WebElement match =driver.findElementByAccessibilityId("Match_Card_"+i);
-//                driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])").get(2).findElements(By.className("android.widget.TextView")).get(0).getText();
                 List<AndroidElement> matchesc = driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])");
                 PointOption source = null;
                 for(AndroidElement matchCard: matchesc){
@@ -75,27 +101,15 @@ public class fetchDetails {
     // convert text to details
     private MatchDetails getPlayersFromMatch(MatchDetails matchDetails) throws InterruptedException {
         List<Player> players = new ArrayList<>();
-        List<MobileElement> d = driver.findElementsByClassName("android.widget.TextView");
-        MobileElement teams = null;
-        for(var team:d){
-            if(team.getText().contains("My Teams")){
-                System.out.println(team.getText());
-                teams = team;
-                break;
-            }
-        }
+        TimeUnit.SECONDS.sleep(3);
+        WebElement teams = driver.findElementByAccessibilityId("btnMy Teams");
         assert teams != null;
         teams.click();
         TimeUnit.SECONDS.sleep(3);
-        d = driver.findElementsByClassName("android.widget.TextView");
-        for(var team:d){
-            System.out.println(team.getText());
-            if(team.getText().contains("CREATE A TEAM") || team.getText().equals("CREATE TEAM")){
-                System.out.println(team.getText());
-                team.click();
-                break;
-            }
-        }
+        var d = driver.findElementsByClassName("android.widget.TextView");
+        WebElement createFirstTeam = driver.findElementByAccessibilityId("create-team-btn");
+        assert createFirstTeam != null;
+        createFirstTeam.click();
 
         TimeUnit.SECONDS.sleep(3);
         System.out.println("Start fetching");

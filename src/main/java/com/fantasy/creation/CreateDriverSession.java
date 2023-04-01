@@ -1,6 +1,6 @@
 package com.fantasy.creation;
 
-import com.fantasy.model.Uuid;
+import com.fantasy.model.Udid;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
@@ -18,7 +18,7 @@ public class CreateDriverSession {
 //        todo: etc
         if(udid.isBlank()){
 //            default phone
-            udid = Uuid.R5CT31D3G4F.name();
+            udid = Udid.R5CT31D3G4F.name();
         }
         if(port==0){
             port = 4723;
