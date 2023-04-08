@@ -4,7 +4,6 @@ import com.fantasy.model.*;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -19,114 +18,78 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import static com.fantasy.model.Constant.CREATE_TEAM_AFTER_FIRST_BUTTON;
+import static com.fantasy.model.Constant.CREATE_TEAM_BUTTON;
+
 public class CreateTeam {
     Logger logger = Logger.getLogger("create team");
     public void init(List<FantasyTeamTO> teams, MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException {
 //        todo: create multiple driver session
-        List<AppiumDriver> drivers = new ArrayList<>();
-        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8X6Z.name(),4723));
-        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8XAY.name(),4724));
-        drivers.add(CreateDriverSession.getDriver(Udid.R5CT31D3G4F.name(),4725));
+        List<AppiumDriver<AndroidElement>> drivers = new ArrayList<>();
+//        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8X4R.name(),4723));
+        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8X6Z.name(),4724));
+//        drivers.add(CreateDriverSession.getDriver(Udid.R5CT31D3G4F.name(),4725));
 //        todo: distribute teams and call create team for each set
+//        todo: parallel processing with multi core
+//        todo: logs for each separately
 //        make the create team call multi threaded
         List<List<FantasyTeamTO>> team = new ArrayList<>();
         team.add(teams.subList(0,20));
         team.add(teams.subList(21,40));
         team.add(teams.subList(0,20));
         final Iterator<List<FantasyTeamTO>> teamIt = team.iterator();
-        final Iterator<AppiumDriver> driverIt = drivers.iterator();
-//        new Thread(new Runnable() {
-//            public void run() {
-//                try {
-//                    AppiumDriver driver = driverIt.next();
-//                    System.out.println("Look at me, look at me..."+driver.getCapabilities().getCapability(MobileCapabilityType.UDID));
-//                    create(teamIt.next(), driver,matchDetails,recreateFlag);
-//                    System.out.println("Look ma, no hands");
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        }).start();
-//
-//        new Thread(new Runnable() {
-//            public void run() {
-//                try {
-//                    AppiumDriver driver = driverIt.next();
-//                    System.out.println("Look at me, look at me..."+driver.getCapabilities().getCapability(MobileCapabilityType.UDID));
-//                    create(teamIt.next(), driver,matchDetails,recreateFlag);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//            }
-//        }).start();
         drivers.parallelStream().forEach(driver -> {
             try {
                 create(teamIt.next(), driver,matchDetails,recreateFlag);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (InterruptedException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
 
 
     }
-    private void create(List<FantasyTeamTO> teams, AppiumDriver driver, MatchDetails matchDetails, boolean recreateFlag) throws InterruptedException, IOException {
+    private void create(List<FantasyTeamTO> teams, AppiumDriver<AndroidElement> driver, MatchDetails matchDetails, boolean recreateFlag) throws InterruptedException, IOException {
 
         int numberOfTeamsAlreadyCreated=Helper.getEventMatchToCreateTeam(matchDetails,driver,false);
         logger.info("Number of teams already created "+numberOfTeamsAlreadyCreated);
         logger.info("recreate flag status "+recreateFlag);
-        if(numberOfTeamsAlreadyCreated !=-1){
+        if(numberOfTeamsAlreadyCreated !=-2){
             if(!recreateFlag){
                 if(numberOfTeamsAlreadyCreated ==20){
                     return;
                 }
             }
             int cn =1;
-            int skip = numberOfTeamsAlreadyCreated;
-            skip=0;
             for(FantasyTeamTO team:teams){
-                Instant matchs = Instant.now();
+                Instant matchStart = Instant.now();
 //                todo recreate flag condition
 //                todo: if team already edited
-                if(cn<skip){
-                    cn++;
-                    continue;
+                if(!recreateFlag){
+                    if(cn< numberOfTeamsAlreadyCreated){
+                        cn++;
+                        continue;
+                    }
                 }
 
-                if(cn >20){
-                    logger.info("Done");
-                    break;
-                }
                 logger.info(String.valueOf(team.getAl().size() +team.getBowl().size()+team.getBat().size()+team.getWk().size()));
                 if(recreateFlag){
                     Helper.SelectTeamToEdit(cn,driver);
                 }else {
                     try {
-                        WebElement createButton = driver.findElementByAccessibilityId("create-team-btn");
+                         AndroidElement createButton = driver.findElementByAccessibilityId(CREATE_TEAM_BUTTON);
                         createButton.click();
                     }catch (NoSuchElementException e){
                         logger.info("0 team exist create team fails" +e.getMessage());
                     }
                     try {
-                        WebElement createButton = driver.findElementByAccessibilityId("my-teams-fab");
+                        WebElement createButton = driver.findElementByAccessibilityId(CREATE_TEAM_AFTER_FIRST_BUTTON);
+//                        todo: if null button
                         createButton.click();
                     }catch (NoSuchElementException e){
-                        logger.info("my team fab not found "+e.getMessage());
+                        logger.info("create team after first button not found "+e.getMessage());
                     }
                 }
-
-
-                TimeUnit.SECONDS.sleep(4);
-
-
+                Helper.wait(4);
                 //        fetch buttons
                 PlayerTypeButton button = Helper.findPlayerTypeButtons(driver);
                 assert (!(button.getWkWeb()!= null && button.getBatWeb() != null && button.getArWeb()!=null && button.getBowlWeb() !=null));
@@ -173,14 +136,12 @@ public class CreateTeam {
                 driver.findElementByAccessibilityId("create-team-NEXT-button").click();
                 TimeUnit.SECONDS.sleep(1);
 
-                PointOption source = null;
-                PointOption destination = null;
+                PointOption<?> source = null;
+                PointOption<?> destination = null;
                 System.out.println(team.getCaptain() + "cap");
-                System.out.println(team.getVcaptain() + "vcap");
+                System.out.println(team.getVcaptain() + "vCap");
                 boolean capFlag = false;
                 boolean vCapFlag = false;
-                boolean onceFlag = true;
-                boolean onceVFlag = true;
                 int count = 0;
 
                 do {
@@ -214,7 +175,7 @@ public class CreateTeam {
                     }
 
                     if (!(source == null || destination == null || (capFlag && vCapFlag))) {
-                        TouchAction actions = new TouchAction(driver);
+                        TouchAction<?> actions = new TouchAction<>(driver);
                         actions.longPress(destination).moveTo(source).release().perform();
                         TimeUnit.MILLISECONDS.sleep(500);
                     }
@@ -224,8 +185,8 @@ public class CreateTeam {
                 if(saveButton.isEnabled()){
                     saveButton.click();
                     TimeUnit.SECONDS.sleep(3);
-                    Instant matche = Instant.now();
-                    System.out.println(matche.minusSeconds(matchs.getEpochSecond())+matchDetails.getTeams().get(0).toString());
+                    Instant matchEnd = Instant.now();
+                    System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond())+matchDetails.getTeams().get(0).toString());
                 }else {
                     System.out.println("error resolve");
                 }
@@ -233,16 +194,13 @@ public class CreateTeam {
             }
         }
     }
-    public static void selectPlayers(AppiumDriver driver, PlayerType type, List<String> players) throws InterruptedException {
+    public static void selectPlayers(AppiumDriver<?> driver, PlayerType type, List<String> players) throws InterruptedException {
 //        todo: make robust
 //        todo: handle infinite loop possibility
-        int index = 0;
-        int count = 0;
-        int size = players.size();
         boolean flag = true;
-        PointOption source = null;
-        PointOption destination = null;
-        boolean behindFlag = false;
+        PointOption<?> source = null;
+        PointOption<?> destination = null;
+        boolean behindFlag;
         int i = 0;
         WebElement preview = driver.findElementByAccessibilityId("team_preview_icon");
         do {
@@ -250,7 +208,7 @@ public class CreateTeam {
             String playerRowAlternate = "CREATE_TEAM_PLAYER_ITEM_VIEW-"+i+"-selected";
 
             try {
-                WebElement pls = null;
+                WebElement pls;
                 try {
                     pls = driver.findElementByAccessibilityId(playerRow);
                 }catch (NoSuchElementException ex){
@@ -266,20 +224,19 @@ public class CreateTeam {
                 }
                 if (playerDetails.size() == 0 || behindFlag) {
                     if (!(source == null || destination == null)) {
-                        TouchAction actions = new TouchAction(driver);
+                        TouchAction<?> actions = new TouchAction<>(driver);
                         actions.longPress(destination).moveTo(source).release().perform();
                         TimeUnit.SECONDS.sleep(2);
                     }
                     continue;
 
                 }
-                Player player = Helper.parsePlayer(playerDetails, type);
+                Player player = Helper.parsePlayer(playerDetails, type,i);
                 if (player.isValid() ){
                     if(players.contains(player.getName().toLowerCase())){
 
                         pls.click();
 //                    todo verify if clicked
-                        count++;
 
                         players.remove(player.getName().toLowerCase());
                         System.out.println("player selected");

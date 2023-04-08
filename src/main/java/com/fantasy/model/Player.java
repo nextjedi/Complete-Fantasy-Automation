@@ -1,11 +1,17 @@
 package com.fantasy.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.fantasy.model.Constant.DIGIT_ONLY_REGEX;
+
+@Data
 public class Player implements Serializable {
     private String name;
+    private int rowId;
     private float credit;
     private PlayerType type;
     private boolean isPlaying;
@@ -20,7 +26,7 @@ public class Player implements Serializable {
     public Player() {
     }
 
-    public Player(String name, float credit, PlayerType type, boolean isPlaying, float selectedBy, int points, Team team, int battinOrder) {
+    public Player(String name, float credit, PlayerType type, boolean isPlaying, float selectedBy, int points, Team team, int battingOrder) {
         this.name = name;
         this.credit = credit;
         this.type = type;
@@ -28,21 +34,22 @@ public class Player implements Serializable {
         this.selectedBy = selectedBy;
         this.points = points;
         this.team = team;
-        this.battingOrder = battinOrder;
+        this.battingOrder = battingOrder;
     }
 
-    public Player(Map<String,String> playerMap,PlayerType type) {
+    public Player(Map<String,String> playerMap,PlayerType type,int playerRow) {
         this.name = playerMap.getOrDefault("player_name","");
-        this.credit = Float.valueOf(playerMap.getOrDefault("players-credits","0"));
+        this.credit = Float.parseFloat(playerMap.getOrDefault("players-credits","0"));
         this.type = type;
         this.isPlaying = false;
-        this.selectedBy = Float.valueOf(playerMap.getOrDefault("select-by-percent","").replaceAll("[^0-9\\.]", ""));
+        this.selectedBy = Float.parseFloat(playerMap.getOrDefault("select-by-percent","").replaceAll(DIGIT_ONLY_REGEX, ""));
         this.points = Integer.parseInt(playerMap.getOrDefault("player-points","0"));
         this.team = Team.valueOf(playerMap.getOrDefault("squad_name","").replaceAll("-",""));
         this.battingOrder = -1;
+        rowId = playerRow;
     }
     public boolean isValid(){
-        return !(name.isBlank() || team == null || credit == 0);
+        return !((name!=null && name.isBlank()) || team == null || credit == 0);
     }
 
     @Override
@@ -50,7 +57,7 @@ public class Player implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return name.toLowerCase().equals(player.getName().toLowerCase()) && type.equals(player.getType()) && points == player.getPoints();
+        return name.equalsIgnoreCase(player.getName()) && type.equals(player.getType()) && points == player.getPoints();
     }
 
     @Override
@@ -58,91 +65,5 @@ public class Player implements Serializable {
         return Objects.hash(name);
     }
 
-    public int getBowlingOvers() {
-        return bowlingOvers;
-    }
 
-    public void setBowlingOvers(int bowlingOvers) {
-        this.bowlingOvers = bowlingOvers;
-    }
-
-    public boolean isKeyBowler() {
-        return isKeyBowler;
-    }
-
-    public void setKeyBowler(boolean keyBowler) {
-        isKeyBowler = keyBowler;
-    }
-
-    public boolean isRunCandidate() {
-        return isRunCandidate;
-    }
-
-    public void setRunCandidate(boolean runCandidate) {
-        isRunCandidate = runCandidate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getCredit() {
-        return credit;
-    }
-
-    public void setCredit(float credit) {
-        this.credit = credit;
-    }
-
-    public PlayerType getType() {
-        return type;
-    }
-
-    public void setType(PlayerType type) {
-        this.type = type;
-    }
-
-    public boolean isPlaying() {
-        return isPlaying;
-    }
-
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
-    }
-
-    public float getSelectedBy() {
-        return selectedBy;
-    }
-
-    public void setSelectedBy(float selectedBy) {
-        this.selectedBy = selectedBy;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public int getBattingOrder() {
-        return battingOrder;
-    }
-
-    public void setBattingOrder(int battingOrder) {
-        this.battingOrder = battingOrder;
-    }
 }

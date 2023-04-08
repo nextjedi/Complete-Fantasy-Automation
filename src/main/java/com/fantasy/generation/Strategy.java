@@ -23,7 +23,7 @@ public class Strategy {
 
         first = matchDetails.getTeams().get(0);
         second = matchDetails.getTeams().get(1);
-        List<FantasyTeam> teams = cvcBased(players);
+        List<FantasyTeam> teams = garbageStrategy(players);
 
 
 
