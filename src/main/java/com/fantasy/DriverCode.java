@@ -8,9 +8,12 @@ import com.fantasy.model.*;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,17 +33,26 @@ public class DriverCode {
         if(matches == null){
             matches = new ArrayList<>();
         }
-//        todo: if today's match is there
         matches =matches.stream().distinct().collect(Collectors.toList());
         matches.stream().sorted((o1, o2) -> o1.getTime().before(o2.getTime())?1:0);
-        if(!matches.isEmpty() && !matches.get(0).getPlayers().isEmpty()){
-            return matches;
-        }else {
+        if(matches.get(0).getTime().before(Date.from(Instant.now()))){
             FetchDetails fetchDetails = new FetchDetails();
             MatchDetails match = fetchDetails.getEventMatch();
+            matches.removeAll(matches);
+//            todo: better read time of match logic
+            match.setTime(Date.from(match.getTime().toInstant().plus(Duration.ofDays(1))));
             matches.add(match);
             Helper.write(matches);
+            return matches;
         }
+        if(!matches.isEmpty() && !matches.get(0).getPlayers().isEmpty()){
+            return matches;
+        }
+        FetchDetails fetchDetails = new FetchDetails();
+        MatchDetails match = fetchDetails.getEventMatch();
+        matches.removeAll(matches);
+        matches.add(match);
+        Helper.write(matches);
 
         return matches;
 

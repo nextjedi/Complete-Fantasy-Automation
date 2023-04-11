@@ -19,7 +19,7 @@ public class CreateDriverSession {
 //        todo: etc
         if(udid.isBlank()){
 //            default phone
-            udid = Udid.R52R40L8XAY.name();
+            udid = Udid.R52R40L8X6Z.name();
         }
         if(port==0){
             port = 4723;

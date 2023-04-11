@@ -54,10 +54,9 @@ public class CreateTeam {
         logger.info("Number of teams already created "+numberOfTeamsAlreadyCreated);
         logger.info("recreate flag status "+recreateFlag);
         if(numberOfTeamsAlreadyCreated !=-2){
-            if(!recreateFlag){
-                if(numberOfTeamsAlreadyCreated ==20){
+            if(!recreateFlag && (numberOfTeamsAlreadyCreated ==20)){
                     return;
-                }
+
             }
             int cn =1;
             for(FantasyTeamTO team:teams){
@@ -71,7 +70,6 @@ public class CreateTeam {
                     }
                 }
 
-                logger.info(String.valueOf(team.getAl().size() +team.getBowl().size()+team.getBat().size()+team.getWk().size()));
                 if(recreateFlag){
                     Helper.SelectTeamToEdit(cn,driver);
                 }else {
@@ -156,17 +154,15 @@ public class CreateTeam {
                         }else if (count >6){
                             continue;
                         }
-                        if(!capFlag){
-                            if(curPlayer.equals(team.getCaptain())){
+                        if(!capFlag && (curPlayer.equals(team.getCaptain()))){
                                 player.findElementByAccessibilityId("Captain-element").click();
                                 capFlag = true;
-                            }
+
                         }
-                        if(!vCapFlag){
-                            if(curPlayer.equals(team.getVcaptain())){
+                        if(!vCapFlag && (curPlayer.equals(team.getVcaptain()))){
                                 player.findElementByAccessibilityId("Vice Captain-element").click();
                                 vCapFlag = true;
-                            }
+
                         }
                         if(capFlag && vCapFlag){
                             break;
@@ -222,7 +218,7 @@ public class CreateTeam {
                 } else if (i == 3) {
                     destination = PointOption.point(pls.getLocation());
                 }
-                if (playerDetails.size() == 0 || behindFlag) {
+                if (playerDetails.isEmpty() || behindFlag) {
                     if (!(source == null || destination == null)) {
                         TouchAction<?> actions = new TouchAction<>(driver);
                         actions.longPress(destination).moveTo(source).release().perform();
@@ -249,7 +245,7 @@ public class CreateTeam {
             }
 
 
-        } while (flag && players.size()!=0);
+        } while (flag && !players.isEmpty());
     }
 
 
