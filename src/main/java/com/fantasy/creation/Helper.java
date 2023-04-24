@@ -198,7 +198,7 @@ public class Helper {
                     destination = PointOption.point(pls.getLocation());
                 }
                 if(playerDetails.size() ==0 ||behindFlag){
-                    Helper.scroll(destination,source,driver,true);
+                    Helper.scroll(destination,source,driver,false);
                     continue;
 
                 }
@@ -357,10 +357,19 @@ public class Helper {
         }
         teams.click();
         TimeUnit.SECONDS.sleep(3);
-        WebElement createFirstTeam = driver.findElementByAccessibilityId(Constant.CREATE_TEAM_BUTTON);
-        if(createFirstTeam == null){
-            Helper.notFound(Constant.CREATE_TEAM_BUTTON);
+        WebElement createFirstTeam = null;
+        try {
+            createFirstTeam= driver.findElementByAccessibilityId(Constant.CREATE_TEAM_BUTTON);
+        }catch (NoSuchElementException e){
+            log.warning("Create team button not found");
+            try {
+                createFirstTeam= driver.findElementByAccessibilityId(CREATE_TEAM_AFTER_FIRST_BUTTON);
+            }catch (NoSuchElementException ex){
+                Helper.notFound(Constant.CREATE_TEAM_BUTTON);
+            }
         }
+
+
         createFirstTeam.click();
         Helper.wait(3);
     }

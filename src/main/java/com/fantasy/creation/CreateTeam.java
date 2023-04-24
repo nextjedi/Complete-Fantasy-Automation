@@ -26,8 +26,8 @@ public class CreateTeam {
     public void init(List<FantasyTeamTO> teams, MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException {
 //        todo: create multiple driver session
         List<AppiumDriver<AndroidElement>> drivers = new ArrayList<>();
-//        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8X4R.name(),4723));
-        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8X6Z.name(),4724));
+        drivers.add(CreateDriverSession.getDriver(Udid.R5CT31D3G4F.name(),4723));
+//        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8X6Z.name(),4724));
 //        drivers.add(CreateDriverSession.getDriver(Udid.R5CT31D3G4F.name(),4725));
 //        todo: distribute teams and call create team for each set
 //        todo: parallel processing with multi core

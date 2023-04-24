@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="on the verge of a milestone">
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="improved match parse">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -331,14 +332,19 @@
           <line>54</line>
           <option name="timeStamp" value="591" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fantasy/creation/FetchDetails.java</url>
+          <line>127</line>
+          <option name="timeStamp" value="597" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/dream11automation$DriverCode.ic" NAME="DriverCode Coverage Results" MODIFIED="1666335132776" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Complete_Fantasy_Automation$DriverCode.ic" NAME="DriverCode Coverage Results" MODIFIED="1680952990059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.fantasy.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/Complete_Fantasy_Automation$DriverCode.ic" NAME="DriverCode Coverage Results" MODIFIED="1680952990059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/dream11automation$DriverCode.ic" NAME="DriverCode Coverage Results" MODIFIED="1673963861204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.fantasy.*</FILTER>
     </SUITE>
   </component>
