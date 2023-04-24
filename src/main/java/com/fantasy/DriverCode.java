@@ -35,11 +35,11 @@ public class DriverCode {
         }
         matches =matches.stream().distinct().collect(Collectors.toList());
         matches.stream().sorted((o1, o2) -> o1.getTime().before(o2.getTime())?1:0);
-        if(matches.get(0).getTime().before(Date.from(Instant.now()))){
+        if(matches.isEmpty() || matches.get(0).getTime().before(Date.from(Instant.now()))){
             FetchDetails fetchDetails = new FetchDetails();
             MatchDetails match = fetchDetails.getEventMatch();
             matches.removeAll(matches);
-//            todo: better read time of match logic
+//            todo: better read time of match logic (priority)
             match.setTime(Date.from(match.getTime().toInstant().plus(Duration.ofDays(1))));
             matches.add(match);
             Helper.write(matches);
