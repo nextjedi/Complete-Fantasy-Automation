@@ -21,11 +21,9 @@ public class DriverCode {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         DriverCode driverCode = new DriverCode();
-        List<MatchDetails> matches = driverCode.fetchIplMatches();
+        List<MatchDetails> matches = driverCode.matchesOfTheDay();
         Instant matchStart = Instant.now();
-        driverCode.createTeamIpl(matches.get(0), true);
-//        Instant matchEnd = Instant.now();
-//        System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
+        driverCode.normalFlow();
 
     }
     public List<MatchDetails> fetchIplMatches() throws MalformedURLException, InterruptedException {
@@ -59,25 +57,25 @@ public class DriverCode {
     }
 
 //    todo schedule run it every day at 12 am
-//    public List<MatchDetails> matchesOfTheDay() throws MalformedURLException, InterruptedException {
-//        List<MatchDetails> matches = Helper.read(LocalDate.now()+".txt");
-//        FetchDetails fetchDetails = new FetchDetails();
-//        MatchDetails match1 = fetchDetails.getEventMatch();
-//        Helper.write(match1);
-//        if(matches==null){
-//            matches = fetchDetails.fetch(null);
-//            matches =matches.stream().filter(matchDetails -> matchDetails.getPrizePool()>9000000).collect(Collectors.toList());
-//            Helper.write(matches);
-//        }
-//
-//        for (MatchDetails match:matches){
-//            if(Helper.read(match)==null){
-//                List<MatchDetails> m = fetchDetails.fetch(match);
-//                Helper.write(m.get(0));
-//            }
-//        }
-//        return matches;
-//    }
+    public List<MatchDetails> matchesOfTheDay() throws MalformedURLException, InterruptedException {
+        List<MatchDetails> matches = Helper.read();
+        FetchDetails fetchDetails = new FetchDetails();
+        MatchDetails match1 = fetchDetails.getEventMatch();
+        Helper.write(matches);
+        if(matches==null){
+            matches = fetchDetails.fetch(null);
+            matches =matches.stream().filter(matchDetails -> matchDetails.getPrizePool()>9000000).collect(Collectors.toList());
+            Helper.write(matches);
+        }
+
+        for (MatchDetails match:matches){
+            if(Helper.read()==null){
+                List<MatchDetails> m = fetchDetails.fetch(match);
+                Helper.write(m);
+            }
+        }
+        return matches;
+    }
 
 //    todo run it as soon as the data arrives
 //    todo run at the designated time
@@ -95,39 +93,25 @@ public class DriverCode {
 
     }
 
-    public void createTeamIpl(MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException, InterruptedException {
-        Strategy strategy =new Strategy();
-        List<FantasyTeamTO> teams =strategy.blackBox(matchDetails);
-//        todo create teams/ edit teams
-        CreateTeam team = new CreateTeam();
-        team.init(teams,matchDetails,recreateFlag);
-//        if(recreateFlag){
-//            team.init(teams.subList(0,20),matchDetails,recreateFlag);
-//        }else {
-//            team.init(teams.subList(20,40),matchDetails,recreateFlag);
-//        }
+    public void normalFlow() throws MalformedURLException, InterruptedException {
+        Instant start = Instant.now();
+        List<MatchDetails> matches = matchesOfTheDay();
 
+        for (MatchDetails match : matches
+        ) {
+            Instant matchStart = Instant.now();
+            createTeam(match, false);
+            Instant matchEnd = Instant.now();
+            System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
+        }
+
+        for (MatchDetails match : matches
+        ) {
+            Instant matchStart = Instant.now();
+            createTeam(match, true);
+            Instant matchEnd = Instant.now();
+            System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
+        }
     }
-
-//    public void normalFlow() throws MalformedURLException, InterruptedException {
-//        Instant start = Instant.now();
-//        List<MatchDetails> matches = matchesOfTheDay();
-//
-//        for (MatchDetails match : matches
-//        ) {
-//            Instant matchStart = Instant.now();
-//            createTeam(match, false);
-//            Instant matchEnd = Instant.now();
-//            System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
-//        }
-//
-//        for (MatchDetails match : matches
-//        ) {
-//            Instant matchStart = Instant.now();
-//            createTeam(match, true);
-//            Instant matchEnd = Instant.now();
-//            System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
-//        }
-//    }
 
 }

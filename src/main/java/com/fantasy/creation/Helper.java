@@ -166,6 +166,7 @@ public class Helper {
     }
 
     public static PlayerTypeButton findPlayerTypeButtons(AppiumDriver<AndroidElement> driver){
+//        check for null values before returning
         AndroidElement wkWeb = driver.findElementByAccessibilityId("btnWK");
         AndroidElement batWeb = driver.findElementByAccessibilityId("btnBAT");
         AndroidElement arWeb = driver.findElementByAccessibilityId("btnAR");

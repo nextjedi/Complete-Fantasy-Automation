@@ -35,7 +35,7 @@ public class CreateDriverSession {
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
         caps.setCapability("newCommandTimeout", 10000);
 
-        caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE,"com.app.dream11Pro");
+        caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE,"com.dream11.fantasy.cricket.football.kabaddi");
         caps.setCapability("appActivity", "com.app.dream11.dream11.SplashActivity");
         URL url = new URL("http://0.0.0.0:"+port+"/wd/hub");
         return new AndroidDriver<>(url,caps);
