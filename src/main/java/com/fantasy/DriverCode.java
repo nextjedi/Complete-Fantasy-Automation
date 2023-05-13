@@ -1,18 +1,16 @@
 package com.fantasy;
 
 import com.fantasy.creation.CreateTeam;
-import com.fantasy.creation.Helper;
 import com.fantasy.creation.FetchDetails;
+import com.fantasy.creation.Helper;
 import com.fantasy.generation.Strategy;
-import com.fantasy.model.*;
+import com.fantasy.model.FantasyTeamTO;
+import com.fantasy.model.MatchDetails;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
-import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;

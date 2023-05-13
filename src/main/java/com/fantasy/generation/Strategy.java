@@ -58,8 +58,7 @@ public class Strategy {
             while (!bowl4It.hasNext()){
                 bowl4It = bowlerCombo4.iterator();
             }
-            Set<Player> teamPlayers =new HashSet<>();
-            teamPlayers.addAll(bats);
+            Set<Player> teamPlayers = new HashSet<>(bats);
             List<Player> bowls = null;
             if(bats.size() ==2){
                 bowls = bowl5It.next();
@@ -94,10 +93,8 @@ public class Strategy {
         List<Player> pakBats = players.stream().filter(player -> pakBat.contains(player.getName())).collect(Collectors.toList());
         indBats.addAll(pakBats);
         List<List<Player>> batsMens =Generator.subset(indBats).simple().stream().filter(playerPlayings -> playerPlayings.size() <6 && playerPlayings.size()>3).toList();
-        batsMens =batsMens.stream().filter(players1 -> {
-            return (players1.stream().filter(player -> player.getTeam().equals(Team.IND)).count() < 4) &&
-                    (players1.stream().filter(player -> player.getTeam().equals(Team.PAK)).count() < 4);
-        }).collect(Collectors.toList());
+        batsMens =batsMens.stream().filter(players1 -> (players1.stream().filter(player -> player.getTeam().equals(Team.IND)).count() < 4) &&
+                (players1.stream().filter(player -> player.getTeam().equals(Team.PAK)).count() < 4)).collect(Collectors.toList());
 
 
         List<String> indBowl= Arrays.asList("B Kumar", "M Shami","A Patel","A Singh");
@@ -106,10 +103,8 @@ public class Strategy {
         List<Player> pakBowls = players.stream().filter(player -> pakBowl.contains(player.getName())).collect(Collectors.toList());
         indBowls.addAll(pakBowls);
         List<List<Player>> bowlers =Generator.subset(indBowls).simple().stream().filter(playerPlayings -> playerPlayings.size() <6 && playerPlayings.size()>3).toList();
-        bowlers =bowlers.stream().filter(players1 -> {
-            return (players1.stream().filter(player -> player.getTeam().equals(Team.IND)).count() < 4) &&
-                    (players1.stream().filter(player -> player.getTeam().equals(Team.PAK)).count() < 3);
-        }).collect(Collectors.toList());
+        bowlers =bowlers.stream().filter(players1 -> (players1.stream().filter(player -> player.getTeam().equals(Team.IND)).count() < 4) &&
+                (players1.stream().filter(player -> player.getTeam().equals(Team.PAK)).count() < 3)).collect(Collectors.toList());
 
 
         Iterator<List<Player>> bowlI = bowlers.iterator();
@@ -264,23 +259,19 @@ public class Strategy {
         List<List<Player>> bowlers =Generator.subset(bowlerPlayer).simple().stream().filter(playerPlayings -> playerPlayings.size() ==4 || playerPlayings.size() ==3 || playerPlayings.size() ==5).toList();
 
         List<List<Player>> teamPlayers = new ArrayList<>();
-        batsMens.forEach(bat -> {
-            bowlers.forEach(bowl ->{
-                alrounder.forEach(al->{
-                    wicketKeepers.forEach(w->{
-                        List<Player> team = new ArrayList<>();
-                        team.addAll(bat);
-                        team.addAll(bowl);
-                        team.addAll(al);
-                        team.addAll(w);
-                        if(team.size() ==11){
-                            teamPlayers.add(team);
-                        }
-                    });
-
-                });
+        batsMens.forEach(bat -> bowlers.forEach(bowl -> alrounder.forEach(al->{
+            wicketKeepers.forEach(w->{
+                List<Player> team = new ArrayList<>();
+                team.addAll(bat);
+                team.addAll(bowl);
+                team.addAll(al);
+                team.addAll(w);
+                if(team.size() ==11){
+                    teamPlayers.add(team);
+                }
             });
-        });
+
+        })));
 
 //        todo:list of cvc candidate 6c2
         List<String> cvc = Arrays.asList("S Gill","H Pandya","Rashid-Khan","D Conway","R Gaikwad","M Ali","R Jadeja");
@@ -377,23 +368,19 @@ public class Strategy {
 
     private List<FantasyTeam> garbageStrategy(List<Player> players){
 
-        List<Player> wk =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.WK)).collect(Collectors.toList());
-        Collections.sort(wk,(o1, o2) -> (int) ((o2.getCredit()*10)-(o1.getCredit()*10)));
+        List<Player> wk = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.WK)).sorted((o1, o2) -> (int) ((o2.getCredit() * 10) - (o1.getCredit() * 10))).collect(Collectors.toList());
         List<Player> wk1 = wk.subList(0, 3);
         List<Player> wk2 = wk.subList(0,3);
 
-        List<Player> bat =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BAT)).collect(Collectors.toList());
-        Collections.sort(bat,(o1, o2) -> (int) ((o2.getCredit()*10)-(o1.getCredit()*10)));
+        List<Player> bat = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BAT)).sorted((o1, o2) -> (int) ((o2.getCredit() * 10) - (o1.getCredit() * 10))).collect(Collectors.toList());
         List<Player> bat1 = bat.subList(0, 3);
         List<Player> bat2 = bat.subList(1, 4);
 
-        List<Player> bowl =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BOWL)).collect(Collectors.toList());
-        Collections.sort(bowl,(o1, o2) -> (int) ((o2.getCredit()*10)-(o1.getCredit()*10)));
+        List<Player> bowl = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.BOWL)).sorted((o1, o2) -> (int) ((o2.getCredit() * 10) - (o1.getCredit() * 10))).collect(Collectors.toList());
         List<Player> bowl1 = bowl.subList(0, 3);
         List<Player> bowl2 = bowl.subList(1, 4);
 
-        List<Player> ar =players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.AR)).collect(Collectors.toList());
-        Collections.sort(ar,(o1, o2) -> (int) ((o2.getCredit()*10)-(o1.getCredit()*10)));
+        List<Player> ar = players.stream().filter(playerPlaying -> playerPlaying.getType().equals(PlayerType.AR)).sorted((o1, o2) -> (int) ((o2.getCredit() * 10) - (o1.getCredit() * 10))).collect(Collectors.toList());
         List<Player> ar1 = ar.subList(0, 2);
         List<Player> ar2 = ar.subList(1, 3);
 

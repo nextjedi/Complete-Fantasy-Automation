@@ -1,6 +1,8 @@
 package com.fantasy.model;
 
 public class Constant {
+    private Constant() {
+    }
     public static final String CONTEST_BUTTON = "btnContests";
     public static final String MY_TEAMS = "btnMy Teams";
     public static final String ANNOUNCED_LINEUPS = "ANNOUNCED_LINEUPS";

@@ -2,7 +2,6 @@ package com.fantasy.model;
 
 import io.appium.java_client.android.AndroidElement;
 import lombok.Data;
-import org.openqa.selenium.WebElement;
 @Data
 public class PlayerTypeButton {
     private AndroidElement wkWeb;

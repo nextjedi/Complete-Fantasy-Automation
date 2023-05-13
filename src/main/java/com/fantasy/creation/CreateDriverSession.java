@@ -12,13 +12,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class CreateDriverSession {
+    private CreateDriverSession() {
+    }
     public static AndroidDriver<AndroidElement> getDriver(String udid, int port) throws MalformedURLException {
-//        todo: standard set of desired capabilities
-//        todo: multiple emulator self launch
-//        manage open emulators
-//        todo: etc
         if(udid.isBlank()){
-//            default phone
             udid = Udid.R5CT31D3G4F.name();
         }
         if(port==0){

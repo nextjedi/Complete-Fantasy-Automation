@@ -9,7 +9,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
 import static com.fantasy.model.Constant.*;
 
 public class CreateTeam {
-    Logger logger = Logger.getLogger(CreateTeam.class.getName());
+    final Logger logger = Logger.getLogger(CreateTeam.class.getName());
     public void init(List<FantasyTeamTO> teams, MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException {
 //        todo: create multiple driver session
         List<AppiumDriver<AndroidElement>> drivers = new ArrayList<>();
@@ -38,14 +37,14 @@ public class CreateTeam {
         drivers.parallelStream().forEach(driver -> {
             try {
                 create(teamIt.next(), driver,matchDetails,recreateFlag);
-            } catch (InterruptedException | IOException e) {
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         });
 
 
     }
-    private void create(List<FantasyTeamTO> teams, AppiumDriver<AndroidElement> driver, MatchDetails matchDetails, boolean recreateFlag) throws InterruptedException, IOException {
+    private void create(List<FantasyTeamTO> teams, AppiumDriver<AndroidElement> driver, MatchDetails matchDetails, boolean recreateFlag) throws InterruptedException {
 
         int numberOfTeamsAlreadyCreated=Helper.findMatch(matchDetails,driver,false);
         logger.info("Number of teams already created "+numberOfTeamsAlreadyCreated);
@@ -60,11 +59,10 @@ public class CreateTeam {
                 Instant matchStart = Instant.now();
 //                todo recreate flag condition
 //                todo: if team already edited
-                if(!recreateFlag){
-                    if(cn <= numberOfTeamsAlreadyCreated){
+                if(!recreateFlag && (cn <= numberOfTeamsAlreadyCreated)){
                         cn++;
                         continue;
-                    }
+
                 }
 
                 if(recreateFlag){

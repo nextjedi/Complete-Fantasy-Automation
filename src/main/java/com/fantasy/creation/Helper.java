@@ -4,18 +4,12 @@ import com.fantasy.model.*;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.touch.offset.PointOption;
-import lombok.Data;
-import org.apache.commons.lang3.EnumUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.*;
 
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -39,12 +33,6 @@ public class Helper {
         return player;
     }
 
-    public static void TeamsRecreatedRead(){
-
-    }
-    public static void TeamsRecreatedWrite(){
-
-    }
 
 
     public static void write(List<MatchDetails> matches){
@@ -176,13 +164,6 @@ public class Helper {
         return players.stream().toList();
     }
 
-    public static void travelContest(){
-
-    }
-    public static void readTeamPlayer(){
-
-    }
-
     public static boolean SelectTeamToEdit(int teamNo, AppiumDriver<AndroidElement> driver){
         int scrollOffset = 500;
         int currentTeam = 0;
@@ -195,7 +176,7 @@ public class Helper {
                     for (MobileElement teamCandidate:teamNames){
                         String text = teamCandidate.getText();
                         if(text.startsWith("(T")){
-                            currentTeam = Integer.parseInt(text.replaceAll("[^0-9.]", ""));
+                            currentTeam = Integer.parseInt(text.replaceAll(DIGIT_ONLY_REGEX, ""));
                             break;
                         }
                     }
@@ -209,17 +190,14 @@ public class Helper {
                             scroll(PointOption.point(teamCard.getLocation()), PointOption.point(teamCard.getLocation().moveBy(0, scrollOffset)), driver,false);
                         } catch (InterruptedException ignored) {
 
-                        } finally {
-                            break;
                         }
                     }else if (currentTeam >teamNo ){
                         try {
                             scroll(PointOption.point(teamCard.getLocation()), PointOption.point(teamCard.getLocation().moveBy(0, (int) (scrollOffset*-0.5))), driver,false);
                         } catch (InterruptedException ignored) {
 
-                        } finally {
-                            break;
                         }
+
                     }
                 }catch (NoSuchElementException ex){
                     System.out.println("element not found");
@@ -276,7 +254,9 @@ public class Helper {
                     }
                 }
             }
-            Helper.scroll(source,source.withCoordinates(0,-400),driver,false);
+            if (source != null) {
+                Helper.scroll(source,source.withCoordinates(0,-400),driver,false);
+            }
         }while (Helper.findCountForPlayerType(category) !=0);
 //        todo: reverse scroll deem it useless
         String playerRow = "CREATE_TEAM_PLAYER_ITEM_VIEW-"+0+"-unselected";
@@ -348,7 +328,7 @@ public class Helper {
 
 
 
-    public static int findMatch(MatchDetails nextMatch,AppiumDriver driver, Boolean isContest) {
+    public static int findMatch(MatchDetails nextMatch,AppiumDriver<AndroidElement> driver, Boolean isContest) {
         WebElement cricket = driver.findElementByAccessibilityId(TAG_CRICKET);
         PointOption<?> destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
         for(int i = 0; i<8; i++){

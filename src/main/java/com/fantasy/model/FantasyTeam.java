@@ -56,23 +56,18 @@ public class FantasyTeam {
 
 
 
-        double sum = players.stream().mapToDouble(value -> value.getCredit()).sum();
+        double sum = players.stream().mapToDouble(Player::getCredit).sum();
         if((players.size() != 11)||(sum >100)){
             return false;
         }
-        if(players.contains(captain) && players.contains(vCaptain)){
-            return true;
-        }else{
-            return false;
-        }
+        return players.contains(captain) && players.contains(vCaptain);
     }
 
     @Override
     public boolean equals(Object o) {
 //        all the players are same and has same cvc
         if (this == o) return true;
-        if (!(o instanceof FantasyTeam)) return false;
-        FantasyTeam that = (FantasyTeam) o;
+        if (!(o instanceof FantasyTeam that)) return false;
         return players.equals(that.players) && captain.equals(that.captain) && vCaptain.equals(that.vCaptain);
     }
 
