@@ -4,8 +4,10 @@ import com.fantasy.model.*;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.touch.offset.PointOption;
+import lombok.Data;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchElementException;
@@ -13,6 +15,7 @@ import org.openqa.selenium.*;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -21,42 +24,9 @@ import java.util.stream.Collectors;
 import static com.fantasy.model.Constant.*;
 
 public class Helper {
-    private Helper(){};
+
+    private Helper(){}
     public static final Logger log = Logger.getLogger("Helper.class");
-
-    public static Boolean selectMatch(AppiumDriver driver, MatchDetails matchDetails) throws InterruptedException {
-        for(int i=1;i<2;i++){
-            WebElement match =driver.findElementByAccessibilityId("Match_Card_"+i);
-            System.out.println("Match_Card_"+i);
-            System.out.println(match.isDisplayed());
-            List<WebElement> texts = match.findElements(By.className("android.widget.TextView"));
-            List<Team> teamsPlaying = new ArrayList<>();
-            for(WebElement text:texts){
-                System.out.println(text.getText());
-                if(EnumUtils.isValidEnumIgnoreCase(Team.class,text.getText().replaceAll("-",""))){
-                    teamsPlaying.add(Team.valueOf(text.getText().replaceAll("-","")));
-                }
-            }
-            if(teamsPlaying.contains(matchDetails.getFirst())){
-                match.click();
-                TimeUnit.SECONDS.sleep(5);
-                List<MobileElement> d = driver.findElementsByClassName("android.widget.TextView");
-                MobileElement teams = null;
-                for(var team:d){
-                    if(team.getText().equals("My Teams")){
-                        System.out.println(team.getText());
-                        teams = team;
-                        break;
-                    }
-                }
-                teams.click();
-                TimeUnit.SECONDS.sleep(3);
-                return true;
-
-            }
-        }
-        return false;
-    }
 
 
     public static Player parsePlayer(List<WebElement> playerDetails, PlayerType type, int playerRow){
@@ -93,23 +63,23 @@ public class Helper {
     }
     public static List<MatchDetails> read() {
         try {
-            String match = FILENAME;
-            FileInputStream fi = new FileInputStream(match);
+            FileInputStream fi = new FileInputStream(FILENAME);
             ObjectInputStream oi = new ObjectInputStream(fi);
-            return (List<MatchDetails>) oi.readObject();
+            List<?> objects = oi.readObject() instanceof List<?> ? ((List<?>) oi.readObject()) : Collections.emptyList();
+            return objects != null ? objects.stream().map(o -> (MatchDetails) o).collect(Collectors.toList()) : Collections.emptyList();
 
         } catch (IOException e) {
-            return null;
+            return Collections.emptyList();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void scroll(PointOption source, PointOption destination, AppiumDriver driver,boolean isTap ) throws InterruptedException {
+    public static void scroll(PointOption<?> source, PointOption<?> destination, AppiumDriver<?> driver,boolean isTap ) throws InterruptedException {
         if((source ==null || destination== null)){{
             notFound("Source or destination is null");
         }}
-        TouchAction actions = new TouchAction(driver);
+        TouchAction<?> actions = new TouchAction<>(driver);
         actions.longPress(source).moveTo(destination).release().perform();
         wait(2);
         if(isTap){
@@ -117,52 +87,40 @@ public class Helper {
         }
     }
 
-    public static MatchDetails parseMatchDetails(List<String> texts) {
-        MatchDetails matchDetails = new MatchDetails();
-        List<Team> teams = new ArrayList<>();
+    public static float amountInWordToNumber(String amount){
         int crore = 10000000;
         int lakh = 100000;
-        for(String t:texts){
-            if(EnumUtils.isValidEnumIgnoreCase(Team.class,t.replaceAll("-",""))){
-                Team team = Team.valueOf(t.replaceAll("-", ""));
-                teams.add(team);
-//                ₹25 Crores
-            }else if(t.contains("Crore")){
-                t =t.replaceAll("[^0-9.]", "");
-                float n =Float.parseFloat(t);
-                n*=crore;
-                matchDetails.setPrizePool(n);
-            }else if(t.contains("Lakh")){
-                t =t.replaceAll("[^0-9.]", "");
-                float n =Float.parseFloat(t);
-                n*=lakh;
-                matchDetails.setPrizePool(n);
-            }else if((t.contains("h")||t.contains("m")) && t.length()<8){
-//                todo: improve time parse
-                String[] time = t.split(" ");
-                if(!StringUtils.isNumeric(time[0])){
-                    continue;
-                }
-                int num = Integer.parseInt(time[0].replaceAll("[^0-9.]", ""));
-                int num1 = 0;
-                if(time.length ==2)
-                    num1 = Integer.parseInt(time[1].replaceAll("[^0-9.]", ""));
-                int sec;
-                if(time[0].endsWith("h")){
-                    sec =num*3600+num1*60;
-                }else {
-                    sec = num*60+num1;
-                }
-                Date date = Date.from(new Date().toInstant().plusSeconds(sec));
-                matchDetails.setTime(date);
+        float n = 0;
+        if(amount.contains("Crore")){
+            amount =amount.replaceAll(DIGIT_ONLY_REGEX, "");
+            n =Float.parseFloat(amount);
+            n*=crore;
+        }else if(amount.contains("Lakh")){
+            amount =amount.replaceAll(DIGIT_ONLY_REGEX, "");
+            n =Float.parseFloat(amount);
+            n*=lakh;
+        }
+        return n;
+    }
 
+    public static Date parseTime(String time){
+        var timeSplit = Arrays.stream(time.split(" ")).toList();
+        int second = 0;
+        for (String s : timeSplit) {
+            if (s.contains("h")) {
+                var hour = Integer.parseInt(s.replaceAll("h", ""));
+                second += hour * 60 * 60 * 1000;
+            }
+            if (s.contains("m")) {
+                var min = Integer.parseInt(s.replaceAll("m", ""));
+                second += min * 60 * 1000;
+            }
+            if (s.contains("s")) {
+                var sec = Integer.parseInt(s.replaceAll("s", ""));
+                second += sec * 1000;
             }
         }
-        matchDetails.setTeams(teams);
-        if(matchDetails.getTeams().size()!=2){
-            return null;
-        }
-        return matchDetails;
+        return Date.from(new Date().toInstant().plusSeconds(second));
     }
 
     public static PlayerTypeButton findPlayerTypeButtons(AppiumDriver<AndroidElement> driver){
@@ -178,12 +136,12 @@ public class Helper {
         return Integer.parseInt(button.findElement(By.className("android.widget.TextView")).getText().replaceAll(DIGIT_ONLY_REGEX, ""));
 
     }
-    public static List<Player> fetchPlayer(AppiumDriver driver, PlayerType type) throws InterruptedException {
+    public static List<Player> fetchPlayer(AppiumDriver<?> driver, PlayerType type) throws InterruptedException {
         log.info("Start reading players");
         Set<Player> players = new HashSet<>();
         boolean flag = true;
-        PointOption source = null;
-        PointOption destination = null;
+        PointOption<?> source = null;
+        PointOption<?> destination = null;
         boolean behindFlag;
         WebElement preview = driver.findElementByAccessibilityId(PREVIEW);
         int i=0;
@@ -275,7 +233,7 @@ public class Helper {
 
     public static void clearPlayers(AppiumDriver<AndroidElement> driver,PlayerType type,WebElement category) throws InterruptedException {
 //        handle infinite loop
-        PointOption source = null;
+        PointOption<?> source = null;
         boolean sourceFlag = true;
         WebElement preview = driver.findElementByAccessibilityId(PREVIEW);
         log.info("Preview button found");
@@ -313,8 +271,7 @@ public class Helper {
                     player.click();
                     TimeUnit.MILLISECONDS.sleep(200);
                     int updatedCount =Helper.findCountForPlayerType(category);
-                    if(updatedCount<playerCount){
-                    }else {
+                    if(updatedCount>=playerCount){
                         player.click();
                     }
                 }
@@ -350,68 +307,66 @@ public class Helper {
     public static void wait(int t) throws InterruptedException {
         TimeUnit.SECONDS.sleep(t);
     }
-
-    public static void clickOnCreateTeam(AppiumDriver driver) throws InterruptedException {
-        WebElement teams = driver.findElementByAccessibilityId(Constant.MY_TEAMS);
-        if(teams == null){
+    public static int clickOnMyTeams(AppiumDriver<?> driver) throws InterruptedException {
+        int teamCount = 0;
+        try {
+            var myTeam = driver.findElementByAccessibilityId(Constant.MY_TEAMS);
+            myTeam.click();
+            TimeUnit.SECONDS.sleep(3);
+            teamCount =  Integer.parseInt(myTeam.findElement(By.className(CLASS_TEXT_VIEW)).getText().replaceAll(DIGIT_ONLY_REGEX, ""));
+        }catch (NoSuchElementException e){
             Helper.notFound(Constant.MY_TEAMS);
         }
-        teams.click();
-        TimeUnit.SECONDS.sleep(3);
-        WebElement createFirstTeam = null;
-        try {
-            createFirstTeam= driver.findElementByAccessibilityId(Constant.CREATE_TEAM_BUTTON);
-        }catch (NoSuchElementException e){
-            log.warning("Create team button not found");
-            try {
-                createFirstTeam= driver.findElementByAccessibilityId(CREATE_TEAM_AFTER_FIRST_BUTTON);
-            }catch (NoSuchElementException ex){
-                Helper.notFound(Constant.CREATE_TEAM_BUTTON);
-            }
-        }
-
-
-        createFirstTeam.click();
-        Helper.wait(3);
+        return teamCount;
     }
 
-    public static void fetchMatchStats(AppiumDriver driver){
+    public static void clickOnCreateTeam(AppiumDriver<?> driver) throws InterruptedException {
+        log.info("Clicking on create team");
+        int teamCount = clickOnMyTeams(driver);
+        WebElement createFirstTeam;
+        try {
+            if(teamCount == 0){
+                createFirstTeam = driver.findElementByAccessibilityId(Constant.CREATE_TEAM_BUTTON);
+            }else {
+                createFirstTeam = driver.findElementByAccessibilityId(Constant.CREATE_TEAM_AFTER_FIRST_BUTTON);
+            }
+            createFirstTeam.click();
+            Helper.wait(3);
+            log.info("Clicked on create team");
+        }catch (NoSuchElementException e){
+            log.warning("Create team button not found");
+            Helper.notFound(Constant.CREATE_TEAM_BUTTON);
+        }
+    }
+
+    public static void fetchMatchStats(AppiumDriver<?> driver){
         WebElement fc =driver.findElementByAccessibilityId(FAN_CODE_STRIP_VIEW);
         List<WebElement> textsElement = fc.findElements(By.className(CLASS_TEXT_VIEW));
-        List<String> texts = textsElement.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> texts = textsElement.stream().map(WebElement::getText).toList();
 //        todo: fetch stats in order
     }
 
 
 
-    public static int findMatch(MatchDetails nextMatch,AppiumDriver driver, Boolean isContest) throws InterruptedException {
-
-
-        WebElement cricket = driver.findElementByAccessibilityId("tagCricket");
-        PointOption destinationOff = PointOption.point(cricket.getLocation());
-        PointOption destination = PointOption.point(cricket.getLocation().moveBy(0,500));
-        Helper.scroll(destinationOff,destination,driver,false);
-        for(int i = 0; i<6; i++){
-            MatchDetails matchDetails = new MatchDetails();
+    public static int findMatch(MatchDetails nextMatch,AppiumDriver driver, Boolean isContest) {
+        WebElement cricket = driver.findElementByAccessibilityId(TAG_CRICKET);
+        PointOption<?> destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
+        for(int i = 0; i<8; i++){
+            MatchDetails matchDetails;
             try{
 //                todo: improve scrolling and accessibility id
-                List<AndroidElement> matchesCard = driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])");
-                PointOption source = null;
+                List<AndroidElement> matchesCard = driver.findElementsByAccessibilityId(MATCH_CARD);
+                PointOption<?> source = null;
                 for(AndroidElement matchCard: matchesCard){
-                    List<MobileElement> texts = matchCard.findElementsByClassName("android.widget.TextView");
-                    matchDetails =parseMatchDetails(texts.stream().map(WebElement::getText).collect(Collectors.toList()));
+                    matchDetails =MatchDetails.fromAndroidElement(matchCard);
                     if(nextMatch!=null &&nextMatch.equals(matchDetails)){
                         matchCard.click();
                         TimeUnit.SECONDS.sleep(5);
                         if(isContest){
-                            driver.findElementByAccessibilityId("btnContests").click();
+                            driver.findElementByAccessibilityId(CONTEST_BUTTON).click();
                             return 0;
-//                            click on contest
                         }else {
-                            WebElement myTeam = driver.findElementByAccessibilityId("btnMy Teams");
-                            myTeam.click();
-                            return Integer.parseInt(myTeam.findElement(By.className("android.widget.TextView")).getText().replaceAll(DIGIT_ONLY_REGEX, ""));
-//                            click on teams
+                            return Helper.clickOnMyTeams(driver);
                         }
                     }
                     source = PointOption.point(matchCard.getCenter());
@@ -426,42 +381,6 @@ public class Helper {
         }
         return -1;
     }
-
-    public static int getEventMatchToCreateTeam(MatchDetails matchDetails,AppiumDriver driver,boolean isContest) throws InterruptedException {
-        TimeUnit.SECONDS.sleep(10);
-        try {
-            WebElement timeElement = driver.findElementByAccessibilityId(MATCH_CARD_START_TIME);
-            List<Team> teams = new ArrayList<>();
-            teams.add(Team.valueOf(driver.findElementByAccessibilityId(TEAM1).getText()));
-            teams.add(Team.valueOf(driver.findElementByAccessibilityId(TEAM2).getText()));
-            matchDetails.setTeams(teams);
-            String time = timeElement.getText();
-            String timer = driver.findElementByAccessibilityId(TIMER).getText();
-            if(matchDetails.getTeams().equals(teams)){
-                timeElement.click();
-                Helper.wait(5);
-            }else {
-                notFound("Match not found");
-            }
-
-            if(isContest){
-                driver.findElementByAccessibilityId(CONTEST_BUTTON).click();
-                return 0;
-//                            click on contest
-            }else {
-                WebElement myTeam = driver.findElementByAccessibilityId(MY_TEAMS);
-                int teamCount = Integer.parseInt(myTeam.findElement(By.className(CLASS_TEXT_VIEW)).getText().replaceAll(DIGIT_ONLY_REGEX, ""));
-                myTeam.click();
-                return teamCount;
-            }
-
-
-        } catch (Exception ex) {
-            log.warning(ex.getMessage());
-        }
-        return -2;
-    }
-
     public static boolean isPointInRectangle(Rectangle rectangle, Point point){
         return rectangle.getY()<point.y && rectangle.getY()+rectangle.getHeight() >point.y;
     }

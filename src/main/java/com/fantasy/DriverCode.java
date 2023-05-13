@@ -15,81 +15,55 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class DriverCode {
+    Logger logger = Logger.getLogger(DriverCode.class.getName());
     public static void main(String[] args) throws IOException, InterruptedException {
 
         DriverCode driverCode = new DriverCode();
-        List<MatchDetails> matches = driverCode.matchesOfTheDay();
-        Instant matchStart = Instant.now();
         driverCode.normalFlow();
-
-    }
-    public List<MatchDetails> fetchIplMatches() throws MalformedURLException, InterruptedException {
-        List<MatchDetails> matches =Helper.read();
-        if(matches == null){
-            matches = new ArrayList<>();
-        }
-        matches =matches.stream().distinct().collect(Collectors.toList());
-        matches.stream().sorted((o1, o2) -> o1.getTime().before(o2.getTime())?1:0);
-        if(matches.isEmpty() || matches.get(0).getTime().before(Date.from(Instant.now()))){
-            FetchDetails fetchDetails = new FetchDetails();
-            MatchDetails match = fetchDetails.getEventMatch();
-            matches.removeAll(matches);
-//            todo: better read time of match logic (priority)
-            match.setTime(Date.from(match.getTime().toInstant().plus(Duration.ofDays(1))));
-            matches.add(match);
-            Helper.write(matches);
-            return matches;
-        }
-        if(!matches.isEmpty() && !matches.get(0).getPlayers().isEmpty()){
-            return matches;
-        }
-        FetchDetails fetchDetails = new FetchDetails();
-        MatchDetails match = fetchDetails.getEventMatch();
-        matches.removeAll(matches);
-        matches.add(match);
-        Helper.write(matches);
-
-        return matches;
 
     }
 
 //    todo schedule run it every day at 12 am
     public List<MatchDetails> matchesOfTheDay() throws MalformedURLException, InterruptedException {
         List<MatchDetails> matches = Helper.read();
-        FetchDetails fetchDetails = new FetchDetails();
-        MatchDetails match1 = fetchDetails.getEventMatch();
-        Helper.write(matches);
-        if(matches==null){
-            matches = fetchDetails.fetch(null);
-            matches =matches.stream().filter(matchDetails -> matchDetails.getPrizePool()>9000000).collect(Collectors.toList());
-            Helper.write(matches);
-        }
 
+        if(matches.isEmpty()){
+            matches = new ArrayList<>();
+        }
+        var upComingMatches =matches.stream().filter(match -> match.getTime().after(Date.from(Instant.now()))).collect(Collectors.toList());
+        if(upComingMatches.size() == 0){
+            upComingMatches.addAll(readNewMatches(matches));
+        }
+        return upComingMatches;
+    }
+    List<MatchDetails> readNewMatches(List<MatchDetails> oldMatches) throws MalformedURLException, InterruptedException {
+        FetchDetails fetchDetails = new FetchDetails();
+        List<MatchDetails> matches =fetchDetails.fetch(null);
+        matches =matches.stream().filter(matchDetails -> matchDetails.getTournamentName().equals("TATA IPL")).collect(Collectors.toSet()).stream().toList();
         for (MatchDetails match:matches){
-            if(Helper.read()==null){
+            if(match.getPlayers() == null || match.getPlayers().isEmpty()){
                 List<MatchDetails> m = fetchDetails.fetch(match);
-                Helper.write(m);
+                match.setPlayers(m.get(0).getPlayers());
             }
         }
+        oldMatches.addAll(matches);
+        Helper.write(oldMatches);
         return matches;
     }
 
 //    todo run it as soon as the data arrives
 //    todo run at the designated time
-    public void createTeam(MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException, InterruptedException {
+    public void createTeam(MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException {
 
-        matchDetails = (MatchDetails) Helper.read();
         Strategy strategy =new Strategy();
         List<FantasyTeamTO> teams =strategy.blackBox(matchDetails);
 //        todo create teams/ edit teams
         CreateTeam team = new CreateTeam();
-//        team.init(teams,matchDetails,recreateFlag);
-        if(recreateFlag) {
-            team.init(teams, matchDetails, true);
-        }
+        team.init(teams,matchDetails,recreateFlag);
 
     }
 

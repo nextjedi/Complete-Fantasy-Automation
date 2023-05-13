@@ -18,17 +18,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static com.fantasy.model.Constant.CREATE_TEAM_AFTER_FIRST_BUTTON;
-import static com.fantasy.model.Constant.CREATE_TEAM_BUTTON;
+import static com.fantasy.model.Constant.*;
 
 public class CreateTeam {
-    Logger logger = Logger.getLogger("create team");
+    Logger logger = Logger.getLogger(CreateTeam.class.getName());
     public void init(List<FantasyTeamTO> teams, MatchDetails matchDetails, boolean recreateFlag) throws MalformedURLException {
 //        todo: create multiple driver session
         List<AppiumDriver<AndroidElement>> drivers = new ArrayList<>();
         drivers.add(CreateDriverSession.getDriver(Udid.R5CT31D3G4F.name(),4723));
-//        drivers.add(CreateDriverSession.getDriver(Udid.R52R40L8X6Z.name(),4724));
-//        drivers.add(CreateDriverSession.getDriver(Udid.R5CT31D3G4F.name(),4725));
 //        todo: distribute teams and call create team for each set
 //        todo: parallel processing with multi core
 //        todo: logs for each separately
@@ -50,7 +47,7 @@ public class CreateTeam {
     }
     private void create(List<FantasyTeamTO> teams, AppiumDriver<AndroidElement> driver, MatchDetails matchDetails, boolean recreateFlag) throws InterruptedException, IOException {
 
-        int numberOfTeamsAlreadyCreated=Helper.getEventMatchToCreateTeam(matchDetails,driver,false);
+        int numberOfTeamsAlreadyCreated=Helper.findMatch(matchDetails,driver,false);
         logger.info("Number of teams already created "+numberOfTeamsAlreadyCreated);
         logger.info("recreate flag status "+recreateFlag);
         if(numberOfTeamsAlreadyCreated !=-2){
@@ -64,14 +61,16 @@ public class CreateTeam {
 //                todo recreate flag condition
 //                todo: if team already edited
                 if(!recreateFlag){
-                    if(cn< numberOfTeamsAlreadyCreated){
+                    if(cn <= numberOfTeamsAlreadyCreated){
                         cn++;
                         continue;
                     }
                 }
 
                 if(recreateFlag){
-                    Helper.SelectTeamToEdit(cn,driver);
+                    if(!Helper.SelectTeamToEdit(cn,driver)){
+                        Helper.notFound("edit team ->"+cn);
+                    }
                 }else {
                     try {
                          AndroidElement createButton = driver.findElementByAccessibilityId(CREATE_TEAM_BUTTON);
@@ -177,7 +176,20 @@ public class CreateTeam {
                     }
                 } while (!(capFlag && vCapFlag));
 
-                WebElement saveButton = driver.findElementByAccessibilityId("create-team-SAVE-button");
+                WebElement saveButton = driver.findElementByAccessibilityId(SAVE_TEAM_BUTTON);
+                WebElement preview = driver.findElementByAccessibilityId("team_preview_icon");
+                var left =preview.getLocation();
+                var right = saveButton.getLocation();
+                TouchAction<?> action= new TouchAction<>(driver);
+                PointOption<?> backupButton = PointOption.point((left.getX()+right.getX())/2, left.getY());
+                action.tap(backupButton).perform();
+                TimeUnit.SECONDS.sleep(1);
+//                select top 4 backup players
+                driver.findElementByAccessibilityId("player-row-index-0-selected").click();
+                driver.findElementByAccessibilityId("player-row-index-1-selected").click();
+                driver.findElementByAccessibilityId("player-row-index-2-selected").click();
+                driver.findElementByAccessibilityId("player-row-index-3-selected").click();
+                saveButton = driver.findElementByAccessibilityId(SAVE_TEAM_BUTTON);
                 if(saveButton.isEnabled()){
                     saveButton.click();
                     TimeUnit.SECONDS.sleep(3);
@@ -228,11 +240,10 @@ public class CreateTeam {
 
                 }
                 Player player = Helper.parsePlayer(playerDetails, type,i);
-                if (player.isValid() ){
-                    if(players.contains(player.getName().toLowerCase())){
+                if (player != null && player.isValid()) {
+                    if (players.contains(player.getName().toLowerCase())) {
 
                         pls.click();
-//                    todo verify if clicked
 
                         players.remove(player.getName().toLowerCase());
                         System.out.println("player selected");

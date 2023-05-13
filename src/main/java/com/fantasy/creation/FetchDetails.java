@@ -1,10 +1,12 @@
 package com.fantasy.creation;
 
 import com.fantasy.model.*;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.touch.offset.PointOption;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.net.MalformedURLException;
@@ -59,18 +61,15 @@ public class FetchDetails {
         driver = CreateDriverSession.getDriver("",0);
         List<MatchDetails> matches = new ArrayList<>();
         TimeUnit.SECONDS.sleep(10);
-        WebElement cricket = driver.findElementByAccessibilityId("tagCricket");
-        PointOption<?> destinationOff = PointOption.point(cricket.getLocation());
+        WebElement cricket = driver.findElementByAccessibilityId(TAG_CRICKET);
         PointOption<?> destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
-        Helper.scroll(destinationOff, destination, driver,false);
-        for(int i = 0; i<6; i++){
-            MatchDetails matchDetails = new MatchDetails();
+        for(int i = 0; i<8; i++){
+            MatchDetails matchDetails;
             try{
-                List<AndroidElement> matchesCard = driver.findElementsByXPath("(//android.view.ViewGroup[@content-desc='match-card'])");
+                List<AndroidElement> matchesCard = driver.findElementsByAccessibilityId(MATCH_CARD);
                 PointOption<?> source = null;
                 for(AndroidElement matchCard: matchesCard){
-                    List<MobileElement> texts = matchCard.findElementsByClassName("android.widget.TextView");
-                    matchDetails =Helper.parseMatchDetails(texts.stream().map(WebElement::getText).collect(Collectors.toList()));
+                    matchDetails =MatchDetails.fromAndroidElement(matchCard);
                     if(nextMatch!=null &&nextMatch.equals(matchDetails)){
                         matchCard.click();
                         TimeUnit.SECONDS.sleep(5);
@@ -126,5 +125,32 @@ public class FetchDetails {
         log.info("total players parsed: "+players.size());
         matchDetails.setPlayers(players);
         return matchDetails;
+    }
+
+    public void fetchLineup(AppiumDriver<?> driver, MatchDetails match){
+        // todo: click on lineup button
+
+        var lineup =driver.findElementByAccessibilityId(ANNOUNCED_LINEUPS);
+        List<String> playerCandidate = new ArrayList<>();
+        lineup.findElements(By.className(CLASS_SCROLL_VIEW)).
+                forEach(scrolls -> scrolls.findElements(By.className(CLASS_TEXT_VIEW)).
+                forEach(textView -> playerCandidate.add(textView.getText())));
+        var players = match.getPlayers();
+        int tCount = 0;
+        int t2Count = 0;
+        for(String player: playerCandidate){
+            var playerOptional =players.stream().filter(p -> p.getName().equalsIgnoreCase(player)).findFirst();
+            if(playerOptional.isPresent()){
+                var p = playerOptional.get();
+                    p.setPlaying(true);
+                    if(p.getTeam().equals(match.getTeams().get(0))) {
+                        p.setBattingOrder(++tCount);
+                    }else{
+                        if(p.getTeam().equals(match.getTeams().get(1))){
+                            p.setBattingOrder(++t2Count);
+                        }
+                    }
+                }
+        }
     }
 }
