@@ -97,15 +97,15 @@ public class Helper {
         for (String s : timeSplit) {
             if (s.contains("h")) {
                 var hour = Integer.parseInt(s.replaceAll("h", ""));
-                second += hour * 60 * 60 * 1000;
+                second += hour * 60 * 60;
             }
             if (s.contains("m")) {
                 var min = Integer.parseInt(s.replaceAll("m", ""));
-                second += min * 60 * 1000;
+                second += min * 60;
             }
             if (s.contains("s")) {
                 var sec = Integer.parseInt(s.replaceAll("s", ""));
-                second += sec * 1000;
+                second += sec;
             }
         }
         return Date.from(new Date().toInstant().plusSeconds(second));

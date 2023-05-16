@@ -38,7 +38,7 @@ public class Player implements Serializable {
     }
 
     public Player(Map<String,String> playerMap,PlayerType type,int playerRow) {
-        this.name = playerMap.getOrDefault("player_name","");
+        this.name = playerMap.getOrDefault("player-name","");
         this.credit = Float.parseFloat(playerMap.getOrDefault("players-credits","0"));
         this.type = type;
         this.isPlaying = false;
