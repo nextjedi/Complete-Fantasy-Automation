@@ -15,7 +15,12 @@
     <name>fantasy</name>
     <description>The King of Fantasy sports </description>
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.surefire.version>3.0.0-M8</maven.surefire.version>
         <java.version>17</java.version>
+        <selenium.version>3.141.59</selenium.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
@@ -41,12 +46,6 @@
             <version>5.9.2</version>
             <scope>compile</scope>
         </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.26</version>
-                <scope>provided</scope>
-            </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

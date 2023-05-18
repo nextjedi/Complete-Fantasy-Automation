@@ -4,29 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="bugs">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/ap/fantasy/creation/HelperTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="step 1 conversion to spring boot">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/DriverCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateDriverSession.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/CreateTeam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/FetchDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/creation/Helper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/generation/Strategy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/BowlingType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Constant.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/FantasyTeam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/FantasyTeamTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/MatchDeviceRecreateCount.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/PitchType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Player.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/PlayerType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/PlayerTypeButton.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Team.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fantasy/model/Udid.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +33,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="usePluginRegistry" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
@@ -72,8 +59,11 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/fantasy/generation&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -137,15 +127,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="fetch.fetchDetails" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="fetch.fetchDetails" />
+    <configuration name="All in dream11automation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="dream11automation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.fantasy.cricket.automation.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -169,10 +154,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.FantasyApplication" />
+        <item itemvalue="JUnit.All in dream11automation" />
         <item itemvalue="Application.DriverCode" />
         <item itemvalue="JUnit.HelperTest.selectTeamToEdit" />
         <item itemvalue="Application.com.fantasy.creation.FetchDetails" />
-        <item itemvalue="Application.fetch.fetchDetails" />
       </list>
     </recent_temporary>
   </component>
