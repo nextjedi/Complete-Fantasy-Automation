@@ -1,16 +1,15 @@
 package com.ap.fantasy;
 
-import com.ap.fantasy.creation.CreateDriverSession;
 import com.ap.fantasy.creation.CreateTeam;
 import com.ap.fantasy.creation.FetchDetails;
 import com.ap.fantasy.creation.Helper;
+import com.ap.fantasy.dao.MatchRepository;
+import com.ap.fantasy.generation.Strategy;
 import com.ap.fantasy.model.FantasyTeamTO;
 import com.ap.fantasy.model.MatchDetails;
-import com.ap.fantasy.generation.Strategy;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.Instant;
@@ -19,15 +18,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
+@Service
 public class DriverCode {
     Logger logger = Logger.getLogger(DriverCode.class.getName());
     FetchDetails fetchDetails = new FetchDetails();
+    @Autowired
+    private MatchRepository matchRepository;
 
 
 //    todo schedule run it every day at 12 am
     public List<MatchDetails> matchesOfTheDay() throws MalformedURLException, InterruptedException {
-        List<MatchDetails> matches = Helper.read();
+        List<MatchDetails> matches = matchRepository.findByTimeAfter(java.sql.Date.valueOf(java.time.LocalDate.now()));
 
         if(matches.isEmpty()){
             matches = new ArrayList<>();
@@ -38,17 +39,18 @@ public class DriverCode {
         if(upComingMatches.size() == 0){
             upComingMatches.addAll(readNewMatches(matches));
         }
+
         return upComingMatches;
     }
     public MatchDetails iplMatch(MatchDetails currentMatch){
-        List<MatchDetails> matches = Helper.read();
+        List<MatchDetails> matches = matchRepository.findByTimeAfter(java.sql.Date.valueOf(java.time.LocalDate.now()));
             try {
                 var match = fetchDetails.getEventMatch(currentMatch);
                 if(matches.contains(match)){
                     matches.remove(match);
                     matches.add(match);
                 }
-                Helper.write(matches);
+                matchRepository.saveAll(matches);
                 return match;
             } catch (MalformedURLException | InterruptedException e) {
                 logger.warning(e.getMessage());
@@ -65,7 +67,7 @@ public class DriverCode {
             }
         }
         oldMatches.addAll(matches);
-        Helper.write(oldMatches);
+        matchRepository.saveAll(oldMatches);
         return matches;
     }
 

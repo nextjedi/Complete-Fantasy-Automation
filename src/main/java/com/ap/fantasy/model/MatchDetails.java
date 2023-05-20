@@ -2,28 +2,47 @@ package com.ap.fantasy.model;
 
 import com.ap.fantasy.creation.Helper;
 import io.appium.java_client.android.AndroidElement;
+import jakarta.persistence.*;
 import lombok.Data;
-import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.NoSuchElementException;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Data
+@Entity
 public class MatchDetails implements Serializable {
-    private Date time;
-    private List<Team> teams;
-    private float prizePool;
-    private Team first;
-    private Team Second;
-    private PitchType pitch;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
+    private Date time;
+    private float prizePool;
+    @Enumerated(EnumType.STRING)
+    private Team first;
+    @Enumerated(EnumType.STRING)
+    private Team Second;
+    @Enumerated(EnumType.STRING)
+    private PitchType pitch;
+    @Enumerated(EnumType.STRING)
     private BowlingType bowlingType;
     private int avgScore;
     private String Venue;
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     private List<Player> players;
     private Boolean isLineupOut;
     private String tournamentName;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public MatchDetails(){}
     public static MatchDetails fromAndroidElement(AndroidElement matchCard) {
@@ -34,15 +53,13 @@ public class MatchDetails implements Serializable {
 
             var amount = matchCard.findElementByAccessibilityId("megaContestAmount").getText();
             matchDetails.setPrizePool(Helper.amountInWordToNumber(amount));
-            List<Team> teams = new ArrayList<>();
             Team team = Team.findByName(matchCard.findElementByAccessibilityId("txtMatchNameLeft").getText().replaceAll("-", ""));
             Team team1 = Team.findByName(matchCard.findElementByAccessibilityId("txtMatchNameRight").getText().replaceAll("-", ""));
-            CollectionUtils.addIgnoreNull(teams, team);
-            CollectionUtils.addIgnoreNull(teams, team1);
-            matchDetails.setTeams(teams);
-            if (teams.size() != 2) {
+            if(team == null || team1 == null){
                 return null;
             }
+            matchDetails.setFirst(team);
+            matchDetails.setSecond(team1);
             matchDetails.setTournamentName( matchCard.findElementByAccessibilityId("tour-name").getText());
             try {
                 matchCard.findElementByAccessibilityId("lineupOuttxt");
@@ -66,16 +83,25 @@ public class MatchDetails implements Serializable {
         this.players = players;
     }
 
+    public List<Team> getTeams(){
+        return List.of(first,Second);
+    }
+    public void setTeams(List<Team> teams){
+        if (teams.size() != 2) throw new IllegalArgumentException("Teams size should be 2");
+        first = teams.get(0);
+        Second = teams.get(1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MatchDetails that = (MatchDetails) o;
-        return new HashSet<>(teams).containsAll(that.teams);
+        return List.of(first,Second).containsAll(List.of(that.first,that.Second));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(teams);
+        return Objects.hash(time, first, Second);
     }
 }

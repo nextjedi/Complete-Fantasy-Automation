@@ -317,9 +317,9 @@ public class Strategy {
 //        get opener from second inning
         List<Player> openers =players.stream().filter(playerPlaying -> playerPlaying.getTeam().equals(second) && (playerPlaying.getBattingOrder() < 3)).collect(Collectors.toList());
 //        get key bowlers from second batting
-        List<Player> keyBowlers =players.stream().filter(playerPlaying -> playerPlaying.getTeam().equals(second) && (playerPlaying.isKeyBowler())).collect(Collectors.toList());
+        List<Player> keyBowlers =players.stream().filter(playerPlaying -> playerPlaying.getTeam().equals(second) && (playerPlaying.getType().equals(PlayerType.AR) || playerPlaying.getType().equals(PlayerType.BOWL))).collect(Collectors.toList());
 //        get key run scoring candidate
-        List<Player> runCandidate =players.stream().filter(playerPlaying -> playerPlaying.getTeam().equals(first) && (playerPlaying.isRunCandidate())).collect(Collectors.toList());
+        List<Player> runCandidate =players.stream().filter(playerPlaying -> playerPlaying.getTeam().equals(first) && (playerPlaying.getType().equals(PlayerType.AR) || playerPlaying.getType().equals(PlayerType.BAT))).collect(Collectors.toList());
         List<List<Player>> bowlers = Generator.subset(keyBowlers).simple().stream().filter(playerPlayings -> playerPlayings.size() >= 5).toList();
         List<List<Player>> runners = Generator.subset(runCandidate).simple().stream().filter(playerPlayings -> playerPlayings.size() >= 4).toList();
 

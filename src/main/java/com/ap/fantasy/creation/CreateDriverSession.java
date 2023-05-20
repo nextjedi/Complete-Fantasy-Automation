@@ -30,6 +30,7 @@ public class CreateDriverSession {
         caps.setCapability(MobileCapabilityType.UDID,udid);
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
+        caps.setCapability("–session-override",true);
         caps.setCapability("newCommandTimeout", 10000);
 
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE,"com.dream11.fantasy.cricket.football.kabaddi");

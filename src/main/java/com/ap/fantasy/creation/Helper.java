@@ -33,36 +33,6 @@ public class Helper {
         return player;
     }
 
-
-
-    public static void write(List<MatchDetails> matches){
-        try {
-            FileOutputStream f = new FileOutputStream(FILENAME);
-            ObjectOutputStream o = new ObjectOutputStream(f);
-            o.writeObject(matches);
-            o.close();
-            f.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
-    }
-    public static List<MatchDetails> read() {
-        try {
-            FileInputStream fi = new FileInputStream(FILENAME);
-            ObjectInputStream oi = new ObjectInputStream(fi);
-            return (List<MatchDetails>) oi.readObject();
-
-
-        } catch (IOException e) {
-            return Collections.emptyList();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void scroll(PointOption<?> source, PointOption<?> destination, AppiumDriver<?> driver,boolean isTap ) throws InterruptedException {
         if((source ==null || destination== null)){{
             notFound("Source or destination is null");
@@ -361,7 +331,7 @@ public class Helper {
                 }
                 scroll(source,destination,driver,false);
             }catch (Exception ex){
-                System.out.println(ex.getMessage());
+                log.warning("Exception while finding match "+ex.getMessage());
             }
 
 //

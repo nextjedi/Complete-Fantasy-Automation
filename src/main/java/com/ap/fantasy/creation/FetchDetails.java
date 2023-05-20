@@ -77,7 +77,7 @@ public class FetchDetails {
                 PointOption<?> source = null;
                 for(AndroidElement matchCard: matchesCard){
                     matchDetails =MatchDetails.fromAndroidElement(matchCard);
-                    if(nextMatch!=null &&nextMatch.equals(matchDetails)){
+                        if(nextMatch!=null &&nextMatch.equals(matchDetails)){
                         matchCard.click();
                         TimeUnit.SECONDS.sleep(5);
                         if(nextMatch.getPlayers() !=null){

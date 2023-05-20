@@ -1,5 +1,6 @@
 package com.ap.fantasy.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,7 +11,13 @@ import static com.ap.fantasy.model.Constant.DIGIT_ONLY_REGEX;
 
 
 @Data
+@Entity
 public class Player implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
     private String name;
     private int rowId;
     private float credit;
@@ -23,6 +30,14 @@ public class Player implements Serializable {
     private int bowlingOvers;
     private boolean isKeyBowler;
     private boolean isRunCandidate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Player() {
     }
