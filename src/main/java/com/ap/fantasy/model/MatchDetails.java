@@ -30,8 +30,13 @@ public class MatchDetails implements Serializable {
     @Enumerated(EnumType.STRING)
     private BowlingType bowlingType;
     private int avgScore;
-    private String Venue;
-    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
+    private String venue;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "match_player",
+            joinColumns = @JoinColumn(name = "match_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id",referencedColumnName = "id")
+    )
     private List<Player> players;
     private Boolean isLineupOut;
     private String tournamentName;
@@ -79,7 +84,7 @@ public class MatchDetails implements Serializable {
         Second = second;
         this.pitch = pitch;
         this.avgScore = avgScore;
-        Venue = venue;
+        this.venue = venue;
         this.players = players;
     }
 

@@ -1,5 +1,9 @@
 package com.ap.fantasy.creation;
 
+import com.ap.fantasy.creation.dream11.CreateOrEditTeam;
+import com.ap.fantasy.creation.dream11.FirstPage;
+import com.ap.fantasy.creation.dream11.MatchDetailsPage;
+import com.ap.fantasy.creation.dream11.MyTeamsPage;
 import com.ap.fantasy.model.*;
 import static com.ap.fantasy.model.Constant.*;
 import io.appium.java_client.AppiumDriver;
@@ -37,16 +41,25 @@ public class CreateTeam {
         drivers.parallelStream().forEach(driver -> {
             try {
                 create(teamIt.next(), driver,matchDetails,recreateFlag);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | MalformedURLException e) {
                 throw new RuntimeException(e);
             }
         });
 
 
     }
-    private void create(List<FantasyTeamTO> teams, AppiumDriver<AndroidElement> driver, MatchDetails matchDetails, boolean recreateFlag) throws InterruptedException {
+    public int findMatch(MatchDetails nextMatch,AppiumDriver<AndroidElement> driver, Boolean isContest) throws MalformedURLException, InterruptedException {
+        FirstPage.getIntoMatch(driver,nextMatch);
+        if(isContest){
+            MatchDetailsPage.clickOnContest(driver);
+            return 0;
+        }else {
+            return MatchDetailsPage.clickOnMyTeams(driver);
+        }
+    }
+    private void create(List<FantasyTeamTO> teams, AppiumDriver<AndroidElement> driver, MatchDetails matchDetails, boolean recreateFlag) throws InterruptedException, MalformedURLException {
 
-        int numberOfTeamsAlreadyCreated=Helper.findMatch(matchDetails,driver,false);
+        int numberOfTeamsAlreadyCreated=findMatch(matchDetails,driver,false);
         logger.info("Number of teams already created "+numberOfTeamsAlreadyCreated);
         logger.info("recreate flag status "+recreateFlag);
         if(numberOfTeamsAlreadyCreated !=-2){
@@ -66,7 +79,7 @@ public class CreateTeam {
                 }
 
                 if(recreateFlag){
-                    if(!Helper.selectTeamToEdit(cn,driver)){
+                    if(!MyTeamsPage.selectTeamToEdit(cn,driver)){
                         Helper.notFound("edit team ->"+cn);
                     }
                 }else {
@@ -86,25 +99,25 @@ public class CreateTeam {
                 }
                 Helper.wait(4);
                 //        fetch buttons
-                PlayerTypeButton button = Helper.findPlayerTypeButtons(driver);
+                PlayerTypeButton button = CreateOrEditTeam.findPlayerTypeButtons(driver);
                 assert (!(button.getWkWeb()!= null && button.getBatWeb() != null && button.getArWeb()!=null && button.getBowlWeb() !=null));
                 logger.info("Buttons found");
                 if(recreateFlag){
                     button.getWkWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.WK,button.getWkWeb());
+                    CreateOrEditTeam.clearPlayers(driver, PlayerType.WK,button.getWkWeb());
 
                     button.getBatWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.BAT,button.getBatWeb());
+                    CreateOrEditTeam.clearPlayers(driver, PlayerType.BAT,button.getBatWeb());
 
                     button.getArWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.AR,button.getArWeb());
+                    CreateOrEditTeam.clearPlayers(driver, PlayerType.AR,button.getArWeb());
 
                     button.getBowlWeb().click();
                     TimeUnit.MILLISECONDS.sleep(200);
-                    Helper.clearPlayers(driver, PlayerType.BOWL,button.getBowlWeb());
+                    CreateOrEditTeam.clearPlayers(driver, PlayerType.BOWL,button.getBowlWeb());
                 }
 
                 button.getWkWeb().click();

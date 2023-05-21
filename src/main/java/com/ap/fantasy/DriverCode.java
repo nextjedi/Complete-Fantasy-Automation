@@ -1,12 +1,16 @@
 package com.ap.fantasy;
 
+import com.ap.fantasy.creation.CreateDriverSession;
 import com.ap.fantasy.creation.CreateTeam;
 import com.ap.fantasy.creation.FetchDetails;
 import com.ap.fantasy.creation.Helper;
+import com.ap.fantasy.creation.dream11.FirstPage;
 import com.ap.fantasy.dao.MatchRepository;
 import com.ap.fantasy.generation.Strategy;
 import com.ap.fantasy.model.FantasyTeamTO;
 import com.ap.fantasy.model.MatchDetails;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,7 @@ import java.util.stream.Collectors;
 public class DriverCode {
     Logger logger = Logger.getLogger(DriverCode.class.getName());
     FetchDetails fetchDetails = new FetchDetails();
+    private AndroidDriver<AndroidElement> driver;
     @Autowired
     private MatchRepository matchRepository;
 
@@ -36,29 +41,16 @@ public class DriverCode {
         var upComingMatches =matches.stream()
                 .filter(match -> match.getTime().after(Date.from(Instant.now())))
                 .collect(Collectors.toList());
-        if(upComingMatches.size() == 0){
+        if(upComingMatches.isEmpty()){
             upComingMatches.addAll(readNewMatches(matches));
         }
 
         return upComingMatches;
     }
-    public MatchDetails iplMatch(MatchDetails currentMatch){
-        List<MatchDetails> matches = matchRepository.findByTimeAfter(java.sql.Date.valueOf(java.time.LocalDate.now()));
-            try {
-                var match = fetchDetails.getEventMatch(currentMatch);
-                if(matches.contains(match)){
-                    matches.remove(match);
-                    matches.add(match);
-                }
-                matchRepository.saveAll(matches);
-                return match;
-            } catch (MalformedURLException | InterruptedException e) {
-                logger.warning(e.getMessage());
-                throw new RuntimeException(e);
-            }
-    }
+
     List<MatchDetails> readNewMatches(List<MatchDetails> oldMatches) throws MalformedURLException, InterruptedException {
-        List<MatchDetails> matches =fetchDetails.fetch(null);
+        driver = CreateDriverSession.getDriver("",0);
+        List<MatchDetails> matches = FirstPage.readMatches(driver);
         matches =matches.stream().filter(matchDetails -> matchDetails.getTournamentName().equals("TATA IPL")).collect(Collectors.toSet()).stream().toList();
         for (MatchDetails match:matches){
             if(match.getPlayers() == null || match.getPlayers().isEmpty()){
@@ -82,21 +74,6 @@ public class DriverCode {
         team.init(teams,matchDetails,recreateFlag);
 
     }
-
-    public void iplFlow() throws MalformedURLException, InterruptedException {
-        Instant start = Instant.now();
-        MatchDetails match = iplMatch(null);
-        if(!match.getTime().before(Date.from(Instant.now().plus(Duration.ofMinutes(30))))){
-            while (match.getIsLineupOut()){
-                match =iplMatch(match);
-                Helper.wait(60);
-            }
-            createTeam(match, true);
-        }else{
-            createTeam(match, false);
-        }
-
-    }
     public void normalFlow() throws MalformedURLException, InterruptedException {
         Instant start = Instant.now();
         List<MatchDetails> matches = matchesOfTheDay();
@@ -116,6 +93,21 @@ public class DriverCode {
             Instant matchEnd = Instant.now();
             System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
         }
+    }
+
+    public void finalTeam(long matchId) throws MalformedURLException, InterruptedException {
+        MatchDetails match = matchRepository.findById(matchId).get();
+        while (!match.getIsLineupOut()){
+            if(match.getTime().before(Date.from(Instant.now()))){
+                return;
+            }
+            // todo: fetch lineup when team
+//            todo:save updated team to db
+
+            Helper.wait(60*2);
+        }
+        createTeam(match, true);
+
     }
 
 }

@@ -4,22 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="step 1 conversion to spring boot">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/controller/HelloWorld.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/dao/MatchRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="converted to spring boot&#10;added db support and created schema and methods">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/CreateOrEditTeam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/MatchDetailsPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/MyTeamsPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iplMatch.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/FantasyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/FantasyApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateDriverSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateDriverSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/FetchDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/FetchDetails.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/Helper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/model/MatchDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/model/MatchDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/model/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/model/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/ap/fantasy/creation/HelperTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -348,7 +346,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684387957950</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="converted to spring boot&#10;added db support and created schema and methods">
+      <created>1684573326045</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1684573326045</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -392,7 +397,8 @@
     <MESSAGE value="workspace xml" />
     <MESSAGE value="bugs" />
     <MESSAGE value="step 1 conversion to spring boot" />
-    <option name="LAST_COMMIT_MESSAGE" value="step 1 conversion to spring boot" />
+    <MESSAGE value="converted to spring boot&#10;added db support and created schema and methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="converted to spring boot&#10;added db support and created schema and methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -453,37 +459,14 @@
           <option name="timeStamp" value="642" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/ap/fantasy/creation/HelperTest.java</url>
-          <line>25</line>
-          <option name="timeStamp" value="653" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="657" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="658" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
-          <line>103</line>
+          <line>80</line>
           <option name="timeStamp" value="659" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
-          <line>61</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="661" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/FetchDetails.java</url>
-          <line>83</line>
-          <option name="timeStamp" value="662" />
+          <line>78</line>
+          <option name="timeStamp" value="671" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

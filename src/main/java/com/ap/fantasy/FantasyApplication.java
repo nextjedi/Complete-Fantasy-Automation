@@ -2,6 +2,7 @@ package com.ap.fantasy;
 
 import com.ap.fantasy.creation.CreateDriverSession;
 import com.ap.fantasy.creation.FetchDetails;
+import com.ap.fantasy.creation.Helper;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,14 @@ public class FantasyApplication {
 	}
 
 	@GetMapping("/hello")
-	public String insertInstruments() throws MalformedURLException, InterruptedException {
-		AndroidDriver<AndroidElement> driver = CreateDriverSession.getDriver("", 0);
-		driver.close();
-		FetchDetails fetchDetails = new FetchDetails();
-		driverCode.normalFlow();
-		return "Hello World";
+	public void insertInstruments() throws MalformedURLException, InterruptedException {
+		while (true)
+		try {
+			driverCode.normalFlow();
+			Helper.wait(60*30);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
