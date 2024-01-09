@@ -28,8 +28,7 @@ public class FantasyApplication {
 
 	@GetMapping("/hello")
 	public void insertInstruments() throws MalformedURLException, InterruptedException {
-		while (true)
-		try {
+		try{
 			driverCode.normalFlow();
 			Helper.wait(60*30);
 		} catch (Exception e) {

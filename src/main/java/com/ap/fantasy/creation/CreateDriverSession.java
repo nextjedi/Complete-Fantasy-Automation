@@ -30,12 +30,12 @@ public class CreateDriverSession {
         caps.setCapability(MobileCapabilityType.UDID,udid);
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
-        caps.setCapability("–session-override",true);
+//        caps.setCapability("–session-override",true);
         caps.setCapability("newCommandTimeout", 10000);
 
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE,"com.dream11.fantasy.cricket.football.kabaddi");
-        caps.setCapability("appActivity", "com.app.dream11.dream11.SplashActivity");
-        URL url = new URL("http://0.0.0.0:"+port+"/wd/hub");
+//        caps.setCapability("appActivity", "com.app.dream11.dream11.SplashActivity");
+        URL url = new URL("http://0.0.0.0:"+port);
         return new AndroidDriver<>(url,caps);
 
 

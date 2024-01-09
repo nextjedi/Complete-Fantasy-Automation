@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="implemented page object model (own spin off)">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" />
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="git ignore updated for sonar lint">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/ap/fantasy/DriverCodeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/FantasyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/FantasyApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateDriverSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateDriverSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/ap/fantasy/FantasyApplicationTests.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,9 +23,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="JUnit5 Test Class" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -32,22 +36,6 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="JpbToolWindowState">
-    <option name="myId2FirstActivated">
-      <map>
-        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
-        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
-      </map>
-    </option>
-    <option name="myId2Visible">
-      <map>
-        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
-        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
-      </map>
-    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -62,6 +50,9 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2FR5hUM3jbrQkbF59yHB3IK6C0z" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -77,6 +68,7 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_directory_selection&quot;: &quot;C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/ap/fantasy&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/fantasy/generation&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
@@ -100,6 +92,7 @@
       <recent name="main" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.ap.fantasy" />
       <recent name="com.fantasy.creation" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -107,39 +100,43 @@
       <recent name="fetch" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FantasyApplication">
-    <configuration name="DriverCode" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.fantasy.DriverCode" />
-      <module name="dream11automation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.fantasy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+  <component name="RunManager" selected="JUnit.DriverCodeTest.pastMatch">
+    <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
+      <option name="appName" />
+      <option name="appServicePlanName" />
+      <option name="appServicePlanResourceGroup" />
+      <option name="appSettingsKey" value="1b101a62-7b96-47b5-847d-986d322ef904" />
+      <option name="artifact" />
+      <option name="debugOptions" />
+      <option name="deployment" />
+      <option name="deploymentStagingDirectoryPath" />
+      <option name="funcPath" />
+      <option name="functionHostArguments" />
+      <option name="hostJsonPath" />
+      <option name="insightsName" />
+      <option name="instrumentationKey" />
+      <option name="javaVersion" />
+      <option name="localSettingsJsonPath" />
+      <option name="moduleName" />
+      <option name="os" />
+      <option name="pricingTier" />
+      <option name="providerMap">
+        <map />
+      </option>
+      <option name="region" />
+      <option name="resourceGroup" />
+      <option name="stagingFolder" />
+      <option name="subscription" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="FantasyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ap.fantasy.FantasyApplication" />
-      <module name="dream11automation" />
+      <module name="fantasy" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.ap.fantasy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="com.fantasy.creation.FetchDetails" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.fantasy.creation.FetchDetails" />
-      <module name="dream11automation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.ap.fantasy.creation.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -155,17 +152,48 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HelperTest.selectTeamToEdit" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="dream11automation" />
+    <configuration name="DriverCodeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fantasy" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.ap.fantasy.creation.*" />
+          <option name="PATTERN" value="com.ap.fantasy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.fantasy.creation" />
-      <option name="MAIN_CLASS_NAME" value="com.ap.fantasy.creation.HelperTest" />
-      <option name="METHOD_NAME" value="selectTeamToEdit" />
+      <option name="PACKAGE_NAME" value="com.ap.fantasy" />
+      <option name="MAIN_CLASS_NAME" value="com.ap.fantasy.DriverCodeTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DriverCodeTest.pastMatch" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fantasy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ap.fantasy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ap.fantasy" />
+      <option name="MAIN_CLASS_NAME" value="com.ap.fantasy.DriverCodeTest" />
+      <option name="METHOD_NAME" value="pastMatch" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FantasyApplicationTest.insertInstruments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fantasy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ap.fantasy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ap.fantasy" />
+      <option name="MAIN_CLASS_NAME" value="com.ap.fantasy.FantasyApplicationTest" />
+      <option name="METHOD_NAME" value="insertInstruments" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -173,11 +201,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.DriverCodeTest.pastMatch" />
+        <item itemvalue="JUnit.DriverCodeTest" />
+        <item itemvalue="JUnit.FantasyApplicationTest.insertInstruments" />
         <item itemvalue="Application.FantasyApplication" />
         <item itemvalue="JUnit.All in dream11automation" />
-        <item itemvalue="Application.DriverCode" />
-        <item itemvalue="JUnit.HelperTest.selectTeamToEdit" />
-        <item itemvalue="Application.com.fantasy.creation.FetchDetails" />
       </list>
     </recent_temporary>
   </component>
@@ -351,7 +379,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684671834486</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="git ignore updated for sonar lint">
+      <created>1685682016356</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1685682016356</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -397,7 +432,8 @@
     <MESSAGE value="step 1 conversion to spring boot" />
     <MESSAGE value="converted to spring boot&#10;added db support and created schema and methods" />
     <MESSAGE value="implemented page object model (own spin off)" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented page object model (own spin off)" />
+    <MESSAGE value="git ignore updated for sonar lint" />
+    <option name="LAST_COMMIT_MESSAGE" value="git ignore updated for sonar lint" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -463,9 +499,9 @@
           <option name="timeStamp" value="659" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
-          <line>78</line>
-          <option name="timeStamp" value="671" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="678" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -476,6 +512,9 @@
     </SUITE>
     <SUITE FILE_PATH="coverage/dream11automation$DriverCode.ic" NAME="DriverCode Coverage Results" MODIFIED="1673963861204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.fantasy.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/dream11automation$FantasyApplication.ic" NAME="FantasyApplication Coverage Results" MODIFIED="1695119708579" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.ap.fantasy.*</FILTER>
     </SUITE>
   </component>
 </project>

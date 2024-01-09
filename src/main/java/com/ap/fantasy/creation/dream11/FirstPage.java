@@ -23,11 +23,10 @@ public class FirstPage {
     private static final Logger log = Logger.getLogger(FirstPage.class.getName());
 
     public static List<MatchDetails> travelMatches(AppiumDriver<AndroidElement> driver,MatchDetails nextMatch) throws InterruptedException, MalformedURLException {
-        driver = CreateDriverSession.getDriver("",0);
         List<MatchDetails> matches = new ArrayList<>();
         TimeUnit.SECONDS.sleep(10);
-        WebElement cricket = driver.findElementByAccessibilityId(TAG_CRICKET);
-        PointOption<?> destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
+//        WebElement cricket = driver.findElementByAccessibilityId(TAG_CRICKET);
+//        PointOption<?> destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
         for(int i = 0; i<8; i++){
             MatchDetails matchDetails;
             try{
@@ -45,7 +44,7 @@ public class FirstPage {
                     source = PointOption.point(matchCard.getCenter());
 
                 }
-                Helper.scroll(source,destination,driver,false);
+//                Helper.scroll(source,destination,driver,false);
             }catch (Exception ex){
                 System.out.println(ex.getMessage());
             }
