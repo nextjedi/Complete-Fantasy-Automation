@@ -5,6 +5,7 @@ import com.ap.fantasy.creation.FetchDetails;
 import com.ap.fantasy.creation.Helper;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
@@ -18,6 +19,7 @@ import java.net.MalformedURLException;
 
 @SpringBootApplication
 @RestController
+@Slf4j
 public class FantasyApplication {
 	@Autowired
 	private DriverCode driverCode;
@@ -32,7 +34,7 @@ public class FantasyApplication {
 			driverCode.normalFlow();
 			Helper.wait(60*30);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 

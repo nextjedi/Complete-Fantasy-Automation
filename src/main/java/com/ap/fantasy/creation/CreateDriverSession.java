@@ -1,6 +1,7 @@
 package com.ap.fantasy.creation;
 
 import com.ap.fantasy.model.Udid;
+import io.appium.java_client.MobileDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
@@ -30,12 +31,13 @@ public class CreateDriverSession {
         caps.setCapability(MobileCapabilityType.UDID,udid);
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
-//        caps.setCapability("–session-override",true);
+        caps.setCapability("appium:waitForIdleTimeout",0);
+        caps.setCapability("appium:disableWindowAnimation",true);
+        caps.setCapability("appium:forceAppLaunch",true);
         caps.setCapability("newCommandTimeout", 10000);
-
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE,"com.dream11.fantasy.cricket.football.kabaddi");
-//        caps.setCapability("appActivity", "com.app.dream11.dream11.SplashActivity");
-        URL url = new URL("http://0.0.0.0:"+port);
+        caps.setCapability("appActivity", "com.app.dream11.dream11.ReactHomeActivity");
+        URL url = new URL("http://0.0.0.0:"+port+"/");
         return new AndroidDriver<>(url,caps);
 
 

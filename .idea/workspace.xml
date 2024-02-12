@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="git ignore updated for sonar lint">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/ap/fantasy/DriverCodeTest.java" afterDir="false" />
+    <list default="true" id="eed48d33-a551-4ce0-8003-512e880291a1" name="Changes" comment="UPDATE APP ACTIVITY">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/CompletedMatchesPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/FantasyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/FantasyApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateDriverSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/CreateDriverSession.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ap/fantasy/FantasyApplicationTests.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +23,8 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -37,15 +36,11 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
-  </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="usePluginRegistry" value="true" />
-      </MavenGeneralSettings>
-    </option>
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -59,25 +54,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/ap/fantasy&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/fantasy/generation&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.DriverCodeTest.pastMatch (1).executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "create.test.in.the.same.root": "true",
+    "git-widget-placeholder": "convert-to-springboot",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/ap/fantasy",
+    "last_opened_file_path": "C:/Users/nextjedi/IdeaProjects/dream11automation/src/main/java/com/fantasy/generation",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\nextjedi\IdeaProjects\dream11automation\src\main\java\com\fantasy\generation" />
@@ -100,7 +103,7 @@
       <recent name="fetch" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.DriverCodeTest.pastMatch">
+  <component name="RunManager" selected="JUnit.DriverCodeTest.pastMatch (1)">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -144,14 +147,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in dream11automation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="dream11automation" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="DriverCodeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="fantasy" />
       <extension name="coverage">
@@ -163,6 +158,22 @@
       <option name="PACKAGE_NAME" value="com.ap.fantasy" />
       <option name="MAIN_CLASS_NAME" value="com.ap.fantasy.DriverCodeTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DriverCodeTest.pastMatch (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="dream11automation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ap.fantasy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ap.fantasy" />
+      <option name="MAIN_CLASS_NAME" value="com.ap.fantasy.DriverCodeTest" />
+      <option name="METHOD_NAME" value="pastMatch" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -199,15 +210,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="FantasyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="dream11automation" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ap.fantasy.FantasyApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.DriverCodeTest.pastMatch (1)" />
         <item itemvalue="JUnit.DriverCodeTest.pastMatch" />
         <item itemvalue="JUnit.DriverCodeTest" />
         <item itemvalue="JUnit.FantasyApplicationTest.insertInstruments" />
         <item itemvalue="Application.FantasyApplication" />
-        <item itemvalue="JUnit.All in dream11automation" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-4caba194b151-107bc6b7" />
+        <option value="jdk-17.0.9-corretto-17.0.9-f644763e9732-ebaef533" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -217,6 +244,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1664442176620</updated>
+      <workItem from="1707714396395" duration="541000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1665413045244</created>
@@ -389,6 +417,9 @@
     <option name="localTasksCounter" value="25" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -494,14 +525,59 @@
           <option name="timeStamp" value="642" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="678" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
-          <line>80</line>
-          <option name="timeStamp" value="659" />
+          <line>54</line>
+          <option name="timeStamp" value="681" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="682" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="683" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="678" />
+          <line>54</line>
+          <option name="timeStamp" value="684" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="685" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java</url>
+          <line>65</line>
+          <option name="timeStamp" value="686" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="688" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/DriverCode.java</url>
+          <line>101</line>
+          <option name="timeStamp" value="689" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/FirstPage.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="690" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ap/fantasy/creation/dream11/CompletedMatchesPage.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="692" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

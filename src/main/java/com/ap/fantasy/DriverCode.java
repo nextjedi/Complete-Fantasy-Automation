@@ -4,11 +4,13 @@ import com.ap.fantasy.creation.CreateDriverSession;
 import com.ap.fantasy.creation.CreateTeam;
 import com.ap.fantasy.creation.FetchDetails;
 import com.ap.fantasy.creation.Helper;
+import com.ap.fantasy.creation.dream11.CompletedMatchesPage;
 import com.ap.fantasy.creation.dream11.FirstPage;
 import com.ap.fantasy.dao.MatchRepository;
 import com.ap.fantasy.generation.Strategy;
 import com.ap.fantasy.model.FantasyTeamTO;
 import com.ap.fantasy.model.MatchDetails;
+import io.appium.java_client.MobileDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import lombok.extern.slf4j.Slf4j;
@@ -95,24 +97,11 @@ public class DriverCode {
         }
     }
     public void pastMatch() throws MalformedURLException, InterruptedException {
+        driver = CreateDriverSession.getDriver("",0);
         Instant start = Instant.now();
-        List<MatchDetails> matches = matchesOfTheDay();
-
-        for (MatchDetails match : matches
-        ) {
-            Instant matchStart = Instant.now();
-            createTeam(match, false);
-            Instant matchEnd = Instant.now();
-            System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
-        }
-
-        for (MatchDetails match : matches
-        ) {
-            Instant matchStart = Instant.now();
-            createTeam(match, true);
-            Instant matchEnd = Instant.now();
-            System.out.println(matchEnd.minusSeconds(matchStart.getEpochSecond()) + match.getTeams().get(0).toString());
-        }
+        FirstPage.SelectMyMatchesMatch(driver);
+        log.info("here");
+        CompletedMatchesPage.readMatches(driver);
     }
 
     public void finalTeam(long matchId) throws MalformedURLException, InterruptedException {

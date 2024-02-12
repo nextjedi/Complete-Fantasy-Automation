@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static com.ap.fantasy.model.Constant.MATCH_CARD;
-import static com.ap.fantasy.model.Constant.TAG_CRICKET;
+import static com.ap.fantasy.model.Constant.*;
 
 public class FirstPage {
     private static final Logger log = Logger.getLogger(FirstPage.class.getName());
@@ -25,8 +24,8 @@ public class FirstPage {
     public static List<MatchDetails> travelMatches(AppiumDriver<AndroidElement> driver,MatchDetails nextMatch) throws InterruptedException, MalformedURLException {
         List<MatchDetails> matches = new ArrayList<>();
         TimeUnit.SECONDS.sleep(10);
-//        WebElement cricket = driver.findElementByAccessibilityId(TAG_CRICKET);
-//        PointOption<?> destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
+        WebElement cricket = driver.findElementByAccessibilityId(TAG_CRICKET);
+        PointOption<?> destination = PointOption.point(cricket.getLocation().moveBy(0, 500));
         for(int i = 0; i<8; i++){
             MatchDetails matchDetails;
             try{
@@ -62,5 +61,14 @@ public class FirstPage {
             return null;
         }
         return matches.get(0);
+    }
+    public static void SelectMyMatchesMatch(AppiumDriver<AndroidElement> driver) throws InterruptedException, MalformedURLException {
+        var elements =driver.findElementsByClassName(CLASS_TEXT_VIEW);
+        for(var androidElement:elements){
+            if(androidElement.getText().equalsIgnoreCase("My Matches")){
+                androidElement.click();
+                break;
+            }
+        }
     }
 }
